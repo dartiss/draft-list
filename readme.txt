@@ -2,7 +2,7 @@
 Contributors: dartiss
 Tags: draft, list, SEO, sidebar, widget, coming soon
 Requires at least: 4.6
-Tested up to: 5.2.2
+Tested up to: 5.3
 Requires PHP: 5.3
 Stable tag: 2.3.3
 License: GPLv2 or later
