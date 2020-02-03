@@ -4,7 +4,7 @@ Draft List allows you to both manage your draft and scheduled posts more easily 
 
 How easy is it display a list of draft posts? Here's an example of how you could use it in a post or page...
 
-`[drafts limit=5 type=post order=ma scheduled=no template='%ul%%draft% %icon%']`
+`[drafts limit=5 type=post order=ma scheduled=no template='{{ul}}{{draft}} {{icon}}']`
 
 This would display a list of up to 5 draft posts in ascending modified date sequence, with an icon displayed to the right of each if the draft is scheduled.
 
