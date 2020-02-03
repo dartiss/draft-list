@@ -19,9 +19,9 @@ function adl_add_custom_box() {
 
 	$box_title = __( 'Draft List', 'simple-draft-list' );
 
-	add_meta_box( 'adl_metaid', __( $box_title ), 'adl_custom_box', 'post' );
+	add_meta_box( 'adl_metaid', __( $box_title ), 'adl_custom_box', 'post', 'side' );
 
-	add_meta_box( 'adl_metaid', __( $box_title ), 'adl_custom_box', 'page' );
+	add_meta_box( 'adl_metaid', __( $box_title ), 'adl_custom_box', 'page', 'side' );
 
 }
 
@@ -47,7 +47,7 @@ function adl_custom_box( $post ) {
 
 	echo '<label for="adl_hide">' . __( 'Hide from Draft List?', 'simple-draft-list' ) . '&nbsp;</label> ';
 	echo '<input type="checkbox" id="adl_hide" name="adl_hide" value="Yes"';
-	if ( strtolower( get_post_meta( $post->ID, 'draft_hide', true ) ) == 'yes' ) { echo ' checked="checked"'; }
+	if ( strtolower( get_post_meta( $post->ID, 'draft_hide', true ) ) === 'yes' ) { echo ' checked="checked"'; }
 	echo ' />';
 
 }
@@ -71,14 +71,14 @@ function adl_save_postdata( $post_id ) {
 
 	// Verify this came from the correct meta box and with proper authorization
 
-	if ( isset( $_POST[ 'artiss_draft_list_noncename' ] ) ) {
-		if ( !wp_verify_nonce( $_POST[ 'artiss_draft_list_noncename' ], plugin_basename( __FILE__ ) ) ) { return; }
+	if ( isset( $_POST[ 'artiss_draft_list_noncename' ] ) ) { // Input var okay.
+		if ( !wp_verify_nonce( sanitize_text_field( $_POST[ 'artiss_draft_list_noncename' ] ), plugin_basename( __FILE__ ) ) ) { return; } // Input var okay.
 	}
 
 	// Check permissions
 
-	if ( isset( $_POST[ 'post_hide' ] ) ) {
-		if ( $_POST[ 'post_type' ] == 'page' ) {
+	if ( isset( $_POST[ 'post_hide' ] ) ) { // Input var okay.
+		if ( sanitize_text_field( $_POST[ 'post_type' ] ) === 'page' ) { // Input var okay.
 			if ( !current_user_can( 'edit_page', $post_id ) ) { return; }
 		} else {
 			if ( !current_user_can( 'edit_post', $post_id ) ) { return; }
@@ -87,8 +87,8 @@ function adl_save_postdata( $post_id ) {
 
 	// Save the data
 
-	if ( isset( $_POST[ 'adl_hide' ] ) ) {
-		$data = sanitize_text_field( $_POST[ 'adl_hide' ] );
+	if ( isset( $_POST[ 'adl_hide' ] ) ) { // Input var okay.
+		$data = sanitize_text_field( $_POST[ 'adl_hide' ] ); // Input var okay.
 	} else {
 		$data = '';
 	}
@@ -102,4 +102,3 @@ function adl_save_postdata( $post_id ) {
 }
 
 add_action( 'save_post', 'adl_save_postdata' );
-?>

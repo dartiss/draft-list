@@ -1,10 +1,11 @@
 === Draft List ===
 Contributors: dartiss
+Donate link: https://artiss.blog/donate
 Tags: draft, list, SEO, sidebar, widget, coming soon
 Requires at least: 4.6
 Tested up to: 5.3
 Requires PHP: 5.3
-Stable tag: 2.3.3
+Stable tag: 2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,7 +17,7 @@ Draft List allows you to both manage your draft and scheduled posts more easily 
 
 How easy is it display a list of draft posts? Here's an example of how you could use it in a post or page...
 
-`[drafts limit=5 type=post order=ma scheduled=no template='%ul%%draft% %icon%']`
+`[drafts limit=5 type=post order=ma scheduled=no template='{{ul}}{{draft}} {{icon}}']`
 
 This would display a list of up to 5 draft posts in ascending modified date sequence, with an icon displayed to the right of each if the draft is scheduled.
 
@@ -35,54 +36,49 @@ Options coming soon…
 * Quick links to be added to the admin menu for scheduled posts and pages
 * Shortcuts to be added to the Admin Bar
 
-Technical specification...
-
-* Licensed under [GPLv2 (or later)](http://wordpress.org/about/gpl/ "GNU General Public License")
-* Designed for both single and multi-site installations
-* PHP7 compatible
-* Fully internationalized, ready for translations. **If you would like to add a translation to this plugin then please head to our [Translating WordPress](https://translate.wordpress.org/projects/wp-plugins/simple-draft-list "Translating WordPress") page**
-
 Please visit the [Github page](https://github.com/dartiss/draft-list "Github") for the latest code development, planned enhancements and known issues.
 
 == Shortcode Parameters ==
 
 The following shortcode parameters are valid...
 
-* **limit=** : The maximum number of draft items to display. The default is 0, which is unlimited.
-* **type=** : This allows you to limit the results to either `post` or `page`. The default is both.
-* **order=** : This is the sequence that you'd like to order the results in. It consists of 2 codes - the first is either `t`, `m` or `c` to represent the title, modified date or created date and the second is `a` or `d` for ascending or descending. Therefore `order=td` will display the results in descending title sequence. The default is descending modified date.
-* **scheduled=** : If specified as `No` then scheduled posts will not display in the list, only drafts.
-* **folder=** : The scheduled icon will be, by default, the one in the plugin folder named `scheduled.png`. However, use this parameter to specify a folder within your theme that you'd prefer the icon to be fetched from.
 * **cache=** : How long to cache the output for, in hours. Defaults to half an hour. Set to `No` to not cache at all. Whenever you save a post any cache will be cleared to ensure that any lists are updated.
-* **template=** : This is the template which formats the output. See the section below on * *Templates** for further information.
 * **date=** : The format of any dates output. This uses the PHP date formatting system - [read here](http://uk3.php.net/manual/en/function.date.php "date") for the formatting codes. Defaults to `F j, Y, g:i a`.
+* **folder=** : The scheduled icon will be, by default, the one in the plugin folder named `scheduled.png`. However, use this parameter to specify a folder within your theme that you'd prefer the icon to be fetched from.
+* **limit=** : The maximum number of draft items to display. The default is 0, which is unlimited.
+* **order=** : This is the sequence that you'd like to order the results in. It consists of 2 codes - the first is either `t`, `m` or `c` to represent the title, modified date or created date and the second is `a` or `d` for ascending or descending. Therefore `order=td` will display the results in descending title sequence. The default is descending modified date.
+* **pending=** : Whether to include pending posts as well. Should be set to `true` or `false`. The default is `false`.
+* **scheduled=** : If specified as false then scheduled posts will not display in the list, only drafts.
+* **template=** : This is the template which formats the output. See the section below on * *Templates** for further information.
+* **type=** : This allows you to limit the results to either `post` or `page`. The default is both.
+* **words=** : The minimum number of words that must be present in the draft for it to be included. Defaults to 0.
 
 To restrict the posts/pages to a particular timeframe you can use the following 2 parameters. You simply state, in words, how long ago the posts must be dated for e.g. "2 days", "3 months", etc.
 
-* **modified=** : This reflects how long ago the post/page must have been modified last for it to be listed. For example `6 months` would only list drafts that have been modified in the last 6 months.
 * **created=** : his reflects how long ago the post/page must have been created for it to be listed. For example `6 months` would only list drafts that were created in the last 6 months.
+* **modified=** : This reflects how long ago the post/page must have been modified last for it to be listed. For example `6 months` would only list drafts that have been modified in the last 6 months.
 
-== Templates ==
+== 🧩 Templates ==
 
 The template parameter allows you to format the output by allowing you to specify how each line of output will display. A number of tags can be added, and you can mix these with HTML. The available tags are as follows...
 
-* **%ul%** - Specifies this is an un-ordered list (i.e. bullet point output). This MUST be specified at the beginning of the template if it is to be used.
-* **%ol%** - Specifies this is an ordered list (i.e. number output). This MUST be specified at the beginning of the template if it is to be used.
-* **%icon%** - This is the icon that indicates a scheduled post.
-* **%draft%** - This is the draft post details. This is the only **REQUIRED** tag.
-* **%author%** - This is the name of the post author.
-* **%author+link%** - This is the name of the post author with, where available, a link to their URL.
-* **%words%** - The number of words in the draft post.
-* **%chars%** - The number of characters (exc. spaces) in the draft post.
-* **%chars+space%** - The number of characters (inc. spaces) in the draft post.
-* **%created%** - The date/time the post was created.
-* **%modified%** - The date/time the post was last modified.
-* **%category%** - Shows the first category assigned to the post.
-* **%categories%** - Shows all categories assigned to the post, comma separated.
+* **{{ul}}** - Specifies this is an un-ordered list (i.e. bullet point output). This MUST be specified at the beginning of the template if it is to be used.
+* **{{ol}}** - Specifies this is an ordered list (i.e. number output). This MUST be specified at the beginning of the template if it is to be used.
+* **{{icon}}** - This is the icon that indicates a scheduled post.
+* **{{draft}}** - This is the draft post details. This is the only **REQUIRED** tag.
+* **{{author}}** - This is the name of the post author.
+* **{{author+link}}** - This is the name of the post author with, where available, a link to their URL.
+* **{{words}}** - The number of words in the draft post.
+* **{{chars}}** - The number of characters (exc. spaces) in the draft post.
+* **{{chars+space}}** - The number of characters (inc. spaces) in the draft post.
+* **{{created}}** - The date/time the post was created.
+* **{{modified}}** - The date/time the post was last modified.
+* **{{category}}** - Shows the first category assigned to the post.
+* **{{categories}}** - Shows all categories assigned to the post, comma separated.
 
-If %ul% or %ol% are specified then all the appropriate list tags will be added to the output. If neither are used then it's assumed that line output will be controlled by yourself.
+If {{ul}} or {{ol}} are specified then all the appropriate list tags will be added to the output. If neither are used then it's assumed that line output will be controlled by yourself.
 
-== Omitting Posts/Pages from Results ==
+== ⛔️ Omitting Posts/Pages from Results ==
 
 If you wish to omit a page or post from the list then you can do this in 3 ways...
 
@@ -90,7 +86,7 @@ If you wish to omit a page or post from the list then you can do this in 3 ways.
 2. The post and page editor has a meta box, where you can select to hide the page/post.
 3. You can add a custom field to a page/post with a name of 'draft_hide' and a value of 'Yes'
 
-== Edit Link ==
+== ✏️ Edit Link ==
 
 If the current user can edit the draft item being listed then it will be linked to the appropriate edit page. The user then simply needs to click on the draft item to edit it.
 
@@ -121,6 +117,17 @@ Voila! It's ready to go.
 == Changelog ==
 
 [Learn more about my version numbering methodology](https://artiss.blog/2016/09/wordpress-plugin-versioning/ "WordPress Plugin Versioning")
+
+= 2.4 =
+* Enhancement: New option to include pending posts in lists
+* Enhancement: New option to limit the posts listed to those with a minimum number of words
+* Enhancement: Now using a time constant for the caching
+* Enhancement: Added Github links to the plugin meta
+* Enhancement: Double braces are the new template standard!
+* Enhancement: Renamed 'Your Drafts' to the more appropriate 'My Drafts'
+* Maintenance: Added selective refresh support to the widget
+* Bug: Fixed an `undefined constant` warning
+* Bug: Improved the padding around the draft count in the admin menu
 
 = 2.3.3 =
 
@@ -226,5 +233,5 @@ Voila! It's ready to go.
 
 == Upgrade Notice ==
 
-= 2.3.3 =
-* A number of maintenance updates
+= 2.4 =
+* A few assorted improvements, alongside some bug fixes

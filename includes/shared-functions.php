@@ -21,11 +21,11 @@
 
 function adl_convert_to_template( $icon = '', $author = '' ) {
 
-	$template = '%ul%';
-	if ( strtolower( $icon ) == 'left' ) { $template .= '%icon%&nbsp;'; }
-	$template .= '%draft%';
-	if ( strtolower( $author ) == 'yes' ) { $template .= '&nbsp;(%author%)'; }
-	if ( strtolower( $icon ) == 'right' ) { $template .= '&nbsp;%icon%'; }
+	$template = '{{ul}}';
+	if ( strtolower( $icon ) === 'left' ) { $template .= '{{icon}}&nbsp;'; }
+	$template .= '{{draft}}';
+	if ( strtolower( $author ) === 'yes' ) { $template .= '&nbsp;({{author}})'; }
+	if ( strtolower( $icon ) === 'right' ) { $template .= '&nbsp;{{icon}}'; }
 
 	return $template;
 }
@@ -77,4 +77,3 @@ function adl_report_error( $error, $plugin_name, $echo = true ) {
 		return $output;
 	}
 }
-?>
