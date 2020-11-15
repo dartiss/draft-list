@@ -1,7 +1,7 @@
 === To Be Published ===
 Contributors: dartiss
 Donate link: https://artiss.blog/donate
-Tags: draft, list, SEO, sidebar, widget, coming soon
+Tags: draft, list, scheduled, SEO, widget
 Requires at least: 4.6
 Tested up to: 5.5
 Requires PHP: 5.3
@@ -112,7 +112,6 @@ Voila! It's ready to go.
 == Screenshots ==
 
 1. An example list of draft posts
-2. Draft post information in the Admin menu
 
 == Changelog ==
 
