@@ -1,11 +1,11 @@
-=== Draft List ===
+=== To Be Published ===
 Contributors: dartiss
 Donate link: https://artiss.blog/donate
 Tags: draft, list, SEO, sidebar, widget, coming soon
 Requires at least: 4.6
-Tested up to: 5.3
+Tested up to: 5.5
 Requires PHP: 5.3
-Stable tag: 2.4
+Stable tag: 3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 

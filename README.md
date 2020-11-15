@@ -16,3 +16,5 @@ Features include...
 * Click on any of the drafts posts listed to edit them
 * Output is cached for streamlined performance
 * A meta box in the editor screen allows you to omit individual posts from any list outputs
+
+<p align="right"><a href="https://wordpress.org/plugins/simple-draft-list/"><img src="https://img.shields.io/wordpress/plugin/dt/simple-draft-list?label=wp.org%20downloads&style=for-the-badge">&nbsp;<img src="https://img.shields.io/wordpress/plugin/stars/simple-draft-list?color=orange&style=for-the-badge"></a></p>
