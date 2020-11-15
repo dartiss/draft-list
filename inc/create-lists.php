@@ -473,3 +473,51 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 
 	return $code;
 }
+
+/**
+ * Convert parameters to a template
+ *
+ * Convert old parameters to template equivalent
+ *
+ * @param  string $icon    Icon position.
+ * @param  string $author  Whether to show author.
+ * @return string          Template.
+ */
+function adl_convert_to_template( $icon = '', $author = '' ) {
+
+	$template = '{{ul}}';
+	if ( strtolower( $icon ) === 'left' ) {
+		$template .= '{{icon}}&nbsp;';
+	}
+	$template .= '{{draft}}';
+	if ( strtolower( $author ) === 'yes' ) {
+		$template .= '&nbsp;({{author}})';
+	}
+	if ( strtolower( $icon ) === 'right' ) {
+		$template .= '&nbsp;{{icon}}';
+	}
+
+	return $template;
+}
+
+/**
+ * Report an error
+ *
+ * Function to report an error
+ *
+ * @param  string $error        Error message.
+ * @param  string $plugin_name  The name of the plugin.
+ * @param  string $echo         True or false, depending on whether you wish to return or echo the results.
+ * @return string               True.
+ */
+function adl_report_error( $error, $plugin_name, $echo = true ) {
+
+	$output = '<p style="color: #f00; font-weight: bold;">' . $plugin_name . ': ' . __( $error ) . "</p>\n";
+	if ( $echo ) {
+		echo $output;
+		return true;
+	} else {
+		return $output;
+	}
+}
+
