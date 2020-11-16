@@ -22,7 +22,7 @@ function adl_set_plugin_meta( $links, $file ) {
 
 		$links = array_merge(
 			$links,
-			array( '<a href="https://github.com/dartiss/to-be-published">' . __( 'Github', 'simple-draft-list' ) . '</a>' ),
+			array( '<a href="https://github.com/dartiss/unublished">' . __( 'Github', 'simple-draft-list' ) . '</a>' ),
 			array( '<a href="https://wordpress.org/support/plugin/simple-draft-list">' . __( 'Support', 'simple-draft-list' ) . '</a>' ),
 			array( '<a href="https://artiss.blog/donate">' . __( 'Donate', 'simple-draft-list' ) . '</a>' ),
 			array( '<a href="https://wordpress.org/support/plugin/simple-draft-list/reviews/#new-post">' . __( 'Write a Review', 'simple-draft-list' ) . '&nbsp;⭐️⭐️⭐️⭐️⭐️</a>' )

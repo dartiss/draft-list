@@ -47,7 +47,7 @@ function adl_draft_list_shortcode( $paras = '', $content = '' ) {
 	return adl_generate_code( $limit, $type, $order, $scheduled, $folder, $date, $created, $modified, $cache, $template, $words, $pending );
 
 }
-add_shortcode( 'drafts', 'adl_draft_list_shortcode' );
+add_shortcode( 'unpublished', 'adl_draft_list_shortcode' );
 
 /**
  * Generate draft list

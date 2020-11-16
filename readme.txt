@@ -1,4 +1,4 @@
-=== To Be Published ===
+=== Unpublished ===
 Contributors: dartiss
 Donate link: https://artiss.blog/donate
 Tags: draft, list, scheduled, SEO, widget
@@ -13,7 +13,7 @@ Manage and promote your drafts and scheduled posts and pages.
 
 == Description ==
 
-Draft List allows you to both manage your draft and scheduled posts more easily but also to promote them by showing them on your site via shortcode or widget - use it to show your visitors what's "coming soon" or as a great SEO tool.
+Unpublished allows you to both manage your draft and scheduled posts more easily but also to promote them by showing them on your site via shortcode or widget - use it to show your visitors what's "coming soon" or as a great SEO tool.
 
 How easy is it display a list of draft posts? Here's an example of how you could use it in a post or page...
 
