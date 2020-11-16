@@ -89,6 +89,7 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 
 	// Check for cache.
 
+	$cache_time = 'no'; // ::
 	if ( ( 'no' === $cache_time ) || ( 'error' === $cache_time ) || ( 'error' === $list_type ) ) {
 		$code = false;
 	} else {
@@ -347,7 +348,7 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 					// Only output if the meta isn't set to exclude it, the limit hasn't been reached,
 					// there are enough words in the post, the dates are fine and the title isn't blank.
 
-					if ( ( $date_accept ) && ( $enough_words ) && ( '' !== $draft_title ) && ( 'yes' !== strtolower( get_post_meta( $post_id, 'draft_hide', true ) ) ) && ( ( 0 === $list_limit ) || ( $valid_draft <= $list_limit ) ) ) {
+					if ( ( $date_accept ) && ( $enough_words ) && ( '' != $draft_title ) && ( 'yes' != strtolower( get_post_meta( $post_id, 'draft_hide', true ) ) ) && ( ( 0 == $list_limit ) || ( $valid_draft <= $list_limit ) ) ) {
 
 						$post_status = $draft_data->post_status;
 						$author      = $draft_data->display_name;
@@ -462,11 +463,9 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 			}
 		}
 
-		$code .= "\n<!-- End of " . $plugin_name . " -->\n";
-
 		// Saving resulting output to cache.
 
-		if ( ( 'no' !== $cache_key ) && ( ! $error ) ) {
+		if ( ( 'no' !== $cache_time ) && ( ! $error ) ) {
 			set_transient( $cache_key, $code, HOUR_IN_SECONDS * $cache_time );
 		}
 	}
@@ -512,9 +511,9 @@ function adl_convert_to_template( $icon = '', $author = '' ) {
  */
 function adl_report_error( $error, $plugin_name, $echo = true ) {
 
-	$output = '<p style="color: #f00; font-weight: bold;">' . $plugin_name . ': ' . __( $error ) . "</p>\n";
+	$output = '<p style="color: #f00; font-weight: bold;">' . $plugin_name . ': ' . $error . "</p>\n";
 	if ( $echo ) {
-		echo $output;
+		echo esc_html( $output );
 		return true;
 	} else {
 		return $output;

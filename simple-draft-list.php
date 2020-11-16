@@ -28,10 +28,10 @@
 
 // Require the various code components - all held within the inc folder.
 
-require_once plugin_dir_path( __FILE__ ) . 'inc/setup.php';        // Administration config.
+require_once plugin_dir_path( __FILE__ ) . 'inc/setup.php';                 // Administration config.
 
-require_once plugin_dir_path( __FILE__ ) . 'inc/metabox.php';      // Add meta box to editor.
+require_once plugin_dir_path( __FILE__ ) . 'inc/metabox.php';               // Add meta box to editor.
 
-require_once plugin_dir_path( __FILE__ ) . 'inc/widget.php';       // Set-up widget.
+require_once plugin_dir_path( __FILE__ ) . 'inc/class-draftlistwidget.php'; // Set-up widget.
 
-require_once plugin_dir_path( __FILE__ ) . 'inc/create-lists.php'; // Code to output draft list.
+require_once plugin_dir_path( __FILE__ ) . 'inc/create-lists.php';          // Code to output draft list.

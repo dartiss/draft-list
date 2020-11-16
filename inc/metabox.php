@@ -14,11 +14,11 @@
  */
 function adl_add_custom_box() {
 
-	$box_title = __( 'Draft List', 'simple-draft-list' );
+	$box_title = __( 'Unpublished', 'simple-draft-list' );
 
-	add_meta_box( 'adl_metaid', __( $box_title ), 'adl_custom_box', 'post', 'side' );
+	add_meta_box( 'adl_metaid', $box_title, 'adl_custom_box', 'post', 'side' );
 
-	add_meta_box( 'adl_metaid', __( $box_title ), 'adl_custom_box', 'page', 'side' );
+	add_meta_box( 'adl_metaid', $box_title, 'adl_custom_box', 'page', 'side' );
 
 }
 
@@ -39,7 +39,7 @@ function adl_custom_box( $post ) {
 
 	// Now request the information.
 
-	echo '<label for="adl_hide">' . __( 'Hide from Draft List?', 'simple-draft-list' ) . '&nbsp;</label> ';
+	echo '<label for="adl_hide">' . esc_html__( 'Hide from Draft List?', 'simple-draft-list' ) . '&nbsp;</label> ';
 	echo '<input type="checkbox" id="adl_hide" name="adl_hide" value="Yes"';
 	if ( 'yes' === strtolower( get_post_meta( $post->ID, 'draft_hide', true ) ) ) {
 		echo ' checked="checked"';
