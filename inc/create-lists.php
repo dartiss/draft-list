@@ -47,7 +47,7 @@ function adl_draft_list_shortcode( $paras = '', $content = '' ) {
 	return adl_generate_code( $limit, $type, $order, $scheduled, $folder, $date, $created, $modified, $cache, $template, $words, $pending );
 
 }
-add_shortcode( 'unpublished', 'adl_draft_list_shortcode' );
+add_shortcode( 'drafts', 'adl_draft_list_shortcode' );
 
 /**
  * Generate draft list
@@ -126,22 +126,22 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 
 		// Set default values.
 
-		if ( '' === $list_limit ) {
+		if ( '' == $list_limit ) {
 			$list_limit = 0;
 		}
-		if ( '' === $words ) {
+		if ( '' == $words ) {
 			$words = 0;
 		}
-		if ( '' === $list_order ) {
+		if ( '' == $list_order ) {
 			$list_order = 'da';
 		}
-		if ( '' === $scheduled ) {
+		if ( '' == $scheduled ) {
 			$scheduled = 'yes';
 		}
-		if ( '' === $date_format ) {
+		if ( '' == $date_format ) {
 			$date_format = 'F j, Y, g:i a';
 		}
-		if ( '' === $template ) {
+		if ( '' == $template ) {
 			$template = '{{ul}}{{draft}}';
 		}
 

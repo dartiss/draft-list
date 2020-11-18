@@ -14,7 +14,7 @@
  */
 function adl_add_custom_box() {
 
-	$box_title = __( 'Unpublished', 'simple-draft-list' );
+	$box_title = __( 'Draft List', 'simple-draft-list' );
 
 	add_meta_box( 'adl_metaid', $box_title, 'adl_custom_box', 'post', 'side' );
 

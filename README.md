@@ -1,10 +1,10 @@
-# Unpublished
+# Draft List
 
-<img src="https://ps.w.org/simple-draft-list/assets/icon-128x128.png" align="left">Unpublished allows you to promote your unpublished posts by showing them on your site via a shortcode or widget - use it to show your visitors what's "coming soon" or as a great SEO tool.
+<img src="https://ps.w.org/simple-draft-list/assets/icon-128x128.png" align="left">Draft List allows you to promote your unpublished posts by showing them on your site via a shortcode or widget - use it to show your visitors what's "coming soon" or as a great SEO tool.
 
 How easy is it display a list of unpublished posts? Here's an example of how you could use it in a post or page...
 
-`[drafts limit=5 type=post order=ma scheduled=no template='{{ul}}{{post}} {{icon}}']`
+`[drafts limit=5 type=post order=ma scheduled=no template='{{ul}}{{draft}} {{icon}}']`
 
 This would display a list of up to 5 draft posts in ascending modified date sequence, with an icon displayed to the right of each if the draft is scheduled.
 

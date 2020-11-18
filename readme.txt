@@ -1,40 +1,32 @@
-=== Unpublished ===
+=== Draft List ===
 Contributors: dartiss
 Donate link: https://artiss.blog/donate
 Tags: draft, list, scheduled, SEO, widget
 Requires at least: 4.6
 Tested up to: 5.5
 Requires PHP: 5.3
-Stable tag: 3.0
+Stable tag: 2.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Manage and promote your drafts and scheduled posts and pages.
+📝 WordPress plugin to manage and promote your unpublished content.
 
 == Description ==
 
-Unpublished allows you to both manage your draft and scheduled posts more easily but also to promote them by showing them on your site via shortcode or widget - use it to show your visitors what's "coming soon" or as a great SEO tool.
+Draft List allows you to both manage your draft and scheduled posts more easily but also to promote them by showing them on your site via shortcode or widget - use it to show your visitors what's "coming soon" or as a great SEO tool.
 
 How easy is it display a list of draft posts? Here's an example of how you could use it in a post or page...
 
-`[drafts limit=5 type=post order=ma scheduled=no template='{{ul}}{{draft}} {{icon}}']`
+`[drafts limit=5 type=post order=ma scheduled=no template='{{ul}}{{[draft}} {{icon}}']`
 
 This would display a list of up to 5 draft posts in ascending modified date sequence, with an icon displayed to the right of each if the draft is scheduled.
 
 Key features include...
 
-* Quick links added to admin menu for going straight to your draft posts and pages
-* Menu links show the number of drafts you currently have
 * Widget/shortcode output is highly configurable - create your own look by using a template, identify scheduled posts with an icon, sequence the results in various ways and even narrow down the results to a specific timeframe
 * Click on any of the drafts posts listed to edit them
 * Output is cached for streamlined performance
 * A meta box in the editor screen allows you to omit individual posts from any list outputs
-
-Options coming soon…
-
-* A dashboard widget to show a summary of draft and scheduled posts and pages
-* Quick links to be added to the admin menu for scheduled posts and pages
-* Shortcuts to be added to the Admin Bar
 
 Please visit the [Github page](https://github.com/dartiss/draft-list "Github") for the latest code development, planned enhancements and known issues.
 
@@ -47,13 +39,13 @@ The following shortcode parameters are valid...
 * **folder=** : The scheduled icon will be, by default, the one in the plugin folder named `scheduled.png`. However, use this parameter to specify a folder within your theme that you'd prefer the icon to be fetched from.
 * **limit=** : The maximum number of draft items to display. The default is 0, which is unlimited.
 * **order=** : This is the sequence that you'd like to order the results in. It consists of 2 codes - the first is either `t`, `m` or `c` to represent the title, modified date or created date and the second is `a` or `d` for ascending or descending. Therefore `order=td` will display the results in descending title sequence. The default is descending modified date.
-* **pending=** : Whether to include pending posts as well. Should be set to `true` or `false`. The default is `false`.
-* **scheduled=** : If specified as false then scheduled posts will not display in the list, only drafts.
+* **pending=** : True or false, where to include pending posts in the result. By default, pending posts will be included.
+* **scheduled=** : True or false, where to include scheduled posts in the result. By default, scheduled posts will be included.
 * **template=** : This is the template which formats the output. See the section below on * *Templates** for further information.
 * **type=** : This allows you to limit the results to either `post` or `page`. The default is both.
 * **words=** : The minimum number of words that must be present in the draft for it to be included. Defaults to 0.
 
-To restrict the posts/pages to a particular timeframe you can use the following 2 parameters. You simply state, in words, how long ago the posts must be dated for e.g. "2 days", "3 months", etc.
+To restrict the posts to a particular timeframe you can use the following 2 parameters. You simply state, in words, how long ago the posts must be dated for e.g. "2 days", "3 months", etc.
 
 * **created=** : his reflects how long ago the post/page must have been created for it to be listed. For example `6 months` would only list drafts that were created in the last 6 months.
 * **modified=** : This reflects how long ago the post/page must have been modified last for it to be listed. For example `6 months` would only list drafts that have been modified in the last 6 months.
@@ -65,12 +57,12 @@ The template parameter allows you to format the output by allowing you to specif
 * **{{ul}}** - Specifies this is an un-ordered list (i.e. bullet point output). This MUST be specified at the beginning of the template if it is to be used.
 * **{{ol}}** - Specifies this is an ordered list (i.e. number output). This MUST be specified at the beginning of the template if it is to be used.
 * **{{icon}}** - This is the icon that indicates a scheduled post.
-* **{{draft}}** - This is the draft post details. This is the only **REQUIRED** tag.
+* **{{draft}}** - This is the post detail and is the only **REQUIRED** tag.
 * **{{author}}** - This is the name of the post author.
 * **{{author+link}}** - This is the name of the post author with, where available, a link to their URL.
 * **{{words}}** - The number of words in the draft post.
-* **{{chars}}** - The number of characters (exc. spaces) in the draft post.
-* **{{chars+space}}** - The number of characters (inc. spaces) in the draft post.
+* **{{chars}}** - The number of characters (exc. spaces) in the post.
+* **{{chars+space}}** - The number of characters (inc. spaces) in the post.
 * **{{created}}** - The date/time the post was created.
 * **{{modified}}** - The date/time the post was last modified.
 * **{{category}}** - Shows the first category assigned to the post.
@@ -82,7 +74,7 @@ If {{ul}} or {{ol}} are specified then all the appropriate list tags will be add
 
 If you wish to omit a page or post from the list then you can do this in 3 ways...
 
-1. By giving the post/page a title beginning with an exclamation mark. You can then remove this before publishing the page/post.
+1. By giving the post a title beginning with an exclamation mark. You can then remove this before publishing the post.
 2. The post and page editor has a meta box, where you can select to hide the page/post.
 3. You can add a custom field to a page/post with a name of 'draft_hide' and a value of 'Yes'
 
@@ -116,6 +108,11 @@ Voila! It's ready to go.
 == Changelog ==
 
 [Learn more about my version numbering methodology](https://artiss.blog/2016/09/wordpress-plugin-versioning/ "WordPress Plugin Versioning")
+
+= 3.0 =
+This is a brand new version with many incompatibilities with the previous releases.
+* Maintenance: Renamed the plugin
+
 
 = 2.4 =
 * Enhancement: New option to include pending posts in lists
@@ -232,5 +229,5 @@ Voila! It's ready to go.
 
 == Upgrade Notice ==
 
-= 2.4 =
-* A few assorted improvements, alongside some bug fixes
+= 3.0 =
+* ⚠️ Brand new release, incompatible with previous versions. Checks the FAQ before upgrading!

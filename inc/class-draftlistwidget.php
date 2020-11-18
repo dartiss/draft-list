@@ -25,7 +25,7 @@ class DraftListWidget extends WP_Widget {
 
 		parent::__construct(
 			'draft_list_widget',
-			__( 'Unpublished', 'simple-draft-list' ),
+			__( 'Draft List', 'simple-draft-list' ),
 			array( 
 				'description'                 => __( 'WordPress plugin to manage and promote your unpublished content.', 'simple-draft-list' ),
 				'class'                       => 'dl-widget',
@@ -49,18 +49,18 @@ class DraftListWidget extends WP_Widget {
 		extract( $args, EXTR_SKIP );
 
 		// Output the header.
-		echo esc_html( $before_widget );
+		echo wp_kses( $before_widget, 'post' );
 
 		// Extract title for heading.
 		$title = $instance['title'];
 
 		// Output title, if one exists.
 		if ( ! empty( $title ) ) {
-			echo esc_html( $before_title . $title . $after_title );
+			echo wp_kses( $before_title . $title . $after_title, 'post' );
 		}
 
 		// Generate the video and output it.
-		echo esc_html(
+		echo wp_kses(
 			adl_generate_code(
 				$instance['limit'],
 				$instance['type'],
@@ -74,11 +74,12 @@ class DraftListWidget extends WP_Widget {
 				$instance['template'],
 				$instance['words'],
 				$instance['pending'],
-			)
+			),
+			'post',
 		);
 
 		// Output the trailer.
-		echo esc_html( $after_widget );
+		echo wp_kses( $after_widget, 'post' );
 	}
 
 	/**

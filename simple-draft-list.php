@@ -1,15 +1,15 @@
 <?php
 /**
- * Unpublished
+ * Draft List
  *
  * @package           Artiss-Draft-List
  * @author            David Artiss
  * @license           GPL-2.0-or-later
  *
- * Plugin Name:       Unpublished
+ * Plugin Name:       Draft List
  * Plugin URI:        https://wordpress.org/plugins/simple-draft-list/
  * Description:       📝 WordPress plugin to manage and promote your unpublished content.
- * Version:           3.0
+ * Version:           2.5
  * Requires at least: 4.6
  * Requires PHP:      5.3
  * Author:            David Artiss
