@@ -32,7 +32,6 @@ function adl_draft_list_shortcode( $paras = '', $content = '' ) {
 				'date'      => '',
 				'created'   => '',
 				'modified'  => '',
-				'cache'     => '',
 				'words'     => '',
 				'pending'   => '',
 			),
@@ -40,11 +39,11 @@ function adl_draft_list_shortcode( $paras = '', $content = '' ) {
 		)
 	);
 
-	if ( '' === $template ) {
+	if ( '' == $template ) {
 		$template = adl_convert_to_template( $icon, $author );
 	}
 
-	return adl_generate_code( $limit, $type, $order, $scheduled, $folder, $date, $created, $modified, $cache, $template, $words, $pending );
+	return adl_generate_code( $limit, $type, $order, $scheduled, $folder, $date, $created, $modified, $template, $words, $pending );
 
 }
 add_shortcode( 'drafts', 'adl_draft_list_shortcode' );
@@ -62,250 +61,202 @@ add_shortcode( 'drafts', 'adl_draft_list_shortcode' );
  * @param  string $date_format  Date format to use.
  * @param  string $created      Created range.
  * @param  string $modified     Modified range.
- * @param  string $cache_time   How long to cache for.
  * @param  string $template     Template.
  * @param  string $words        Number of words.
  * @param  string $pending      Whether to show pending posts.
  * @return string               Draft list output.
  */
-function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '', $scheduled = '', $icon_folder = '', $date_format = '', $created = '', $modified = '', $cache_time = '', $template = '', $words = '', $pending = '' ) {
-	
-	// Check and valid cache details.
-	// If invalid, assign a value to it that will ensure no cache is fetched and it drops through to the error checking.
+function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '', $scheduled = '', $icon_folder = '', $date_format = '', $created = '', $modified = '', $template = '', $words = '', $pending = '' ) {
 
-	$cache_time = strtolower( $cache_time );
-	if ( '' === $cache_time ) {
-		$cache_time = 0.5;
-	}
-	if ( ( 'no' !== $cache_time ) && ( ! is_numeric( $cache_time ) ) ) {
-		$cache_time = 'error';
-	}
-
-	// Validate the list type as this will determine the cache key.
-
-	if ( ( 'post' !== $list_type ) && ( 'page' !== $list_type ) && ( '' !== $list_type ) ) {
+	// Validate the list type.
+	if ( ( 'post' != $list_type ) && ( 'page' != $list_type ) && ( '' != $list_type ) ) {
 		$list_type = 'error';
 	}
 
-	// Check for cache.
+	$plugin_name = 'Draft List';
 
-	$cache_time = 'no'; // ::
-	if ( ( 'no' === $cache_time ) || ( 'error' === $cache_time ) || ( 'error' === $list_type ) ) {
-		$code = false;
-	} else {
+	// Convert appropriate parameters.
+	$list_type  = strtolower( $list_type );
+	$list_order = strtolower( $list_order );
+	$scheduled  = strtolower( $scheduled );
+	$pending    = strtolower( $pending );
+	$template   = html_entity_decode( $template );
 
-		// Build an item of the cache key based on current privilages - this ensures that editors have their own cache.
-
-		if ( ( current_user_can( 'edit_posts' ) ) && ( ( 'post' === $list_type ) || ( '' === $list_type ) ) ) {
-			$editor = 'Y';
-		} else {
-			$editor = 'N';
-		}
-		if ( ( current_user_can( 'edit_pages' ) ) && ( ( 'page' === $list_type ) || ( '' === $list_type ) ) ) {
-			$editor .= 'Y';
-		} else {
-			$editor .= 'N';
-		}
-
-		// Build cache key & attempt to get cache.
-
-		$cache_key = 'adl_' . md5( $list_limit . $list_type . $list_order . $scheduled . $icon_folder . $date_format . $created . $modified . $cache_time . $editor . $template . $words . $pending );
-		$code      = get_transient( $cache_key );
+	// Set default values.
+	if ( '' == $list_limit ) {
+		$list_limit = 0;
+	}
+	if ( '' == $words ) {
+		$words = 0;
+	}
+	if ( '' == $list_order ) {
+		$list_order = 'da';
+	}
+	if ( '' == $scheduled ) {
+		$scheduled = 'yes';
+	}
+	if ( '' == $pending ) {
+		$pending = 'no';
+	}
+	if ( '' == $date_format ) {
+		$date_format = 'F j, Y, g:i a';
+	}
+	if ( '' == $template ) {
+		$template = '{{ul}}{{draft}}';
 	}
 
-	if ( ! $code ) {
+	// Define order of the results.
+	$first_char    = substr( $list_order, 0, 1 );
+	$second_char   = substr( $list_order, 1, 1 );
+	$sort_field    = '';
+	$sort_sequence = '';
 
-		$plugin_name = 'Draft List';
+	if ( ( 'd' == $first_char ) || ( 'm' == $first_char ) ) {
+		$sort_field = 'post_modified';
+	}
+	if ( 'c' == $first_char ) {
+		$sort_field = 'post_date';
+	}
+	if ( 't' == $first_char ) {
+		$sort_field = 'post_title';
+	}
+	if ( 'a' == $second_char ) {
+		$sort_sequence = ' ASC';
+	}
+	if ( 'd' == $second_char ) {
+		$sort_sequence = ' DESC';
+	}
 
-		// Convert appropriate parameters.
+	// Perform validation of passed parameters.
+	$error = false;
+	if ( ! is_numeric( $list_limit ) ) {
+		$code .= adl_report_error( __( 'The limit is invalid - it must be a number', 'simple-draft-list' ), $plugin_name, false );
+		$error = true;
+	}
+	if ( ! is_numeric( $words ) ) {
+		$code .= adl_report_error( __( 'The minimum number of words is invalid - it must be a number', 'simple-draft-list' ), $plugin_name, false );
+		$error = true;
+	}
+	if ( ( '' == $sort_field ) || ( '' == $sort_sequence ) ) {
+		$code .= adl_report_error( __( 'The order is invalid - please view the instructions for valid combinations', 'simple-draft-list' ), $plugin_name, false );
+		$error = true;
+	}
+	if ( ( 'post' != $list_type ) && ( 'page' != $list_type ) && ( '' != $list_type ) ) {
+		$code .= adl_report_error( __( "The list type is invalid - it must be blank, 'post' or 'page'.", 'simple-draft-list' ), $plugin_name, false );
+		$error = true;
+	}
+	if ( ( 'no' != $scheduled ) && ( 'yes' != $scheduled ) ) {
+		$code .= adl_report_error( __( "The scheduled parameter must be either 'Yes' or 'No'", 'simple-draft-list' ), $plugin_name, false );
+		$error = true;
+	}
+	if ( strpos( $template, '%draft%' ) == false && strpos( $template, '{{draft}}' ) == false ) {
+		$code .= adl_report_error( __( 'The template must include the {{draft}} tag', 'simple-draft-list' ), $plugin_name, false );
+		$error = true;
+	}
 
-		$list_type  = strtolower( $list_type );
-		$list_order = strtolower( $list_order );
-		$scheduled  = strtolower( $scheduled );
-		$template   = html_entity_decode( $template );
+	// Calculate created and modified dates to compare with.
+	$far_past = '2 January 1970';
 
-		// Set default values.
+	if ( '' != $created ) {
+		$created = '-' . $created;
+	} else {
+		$created = $far_past;
+	}
+	$created = strtotime( $created );
+	if ( ( -1 == $created ) || ( ! $created ) ) {
+		$code .= adl_report_error( __( 'The created parameter is invalid', 'simple-draft-list' ), $plugin_name, false );
+		$error = true;
+	}
+	$created = date( 'Y-m-d H:i:s', $created );
 
-		if ( '' == $list_limit ) {
-			$list_limit = 0;
-		}
-		if ( '' == $words ) {
-			$words = 0;
-		}
-		if ( '' == $list_order ) {
-			$list_order = 'da';
-		}
-		if ( '' == $scheduled ) {
-			$scheduled = 'yes';
-		}
-		if ( '' == $date_format ) {
-			$date_format = 'F j, Y, g:i a';
-		}
-		if ( '' == $template ) {
-			$template = '{{ul}}{{draft}}';
-		}
+	if ( '' != $modified ) {
+		$modified = '-' . $modified;
+	} else {
+		$modified = $far_past;
+	}
+	$modified = strtotime( $modified );
+	if ( ( -1 == $modified ) || ( ! $modified ) ) {
+		$code .= adl_report_error( __( 'The modified parameter is invalid', 'simple-draft-list' ), $plugin_name, false );
+		$error = true;
+	}
+	$modified = date( 'Y-m-d H:i:s', $modified );
 
-		// Define order of the results.
+	if ( ! $error ) {
 
-		$first_char    = substr( $list_order, 0, 1 );
-		$second_char   = substr( $list_order, 1, 1 );
-		$sort_field    = '';
-		$sort_sequence = '';
-
-		if ( ( 'd' === $first_char ) || ( 'm' === $first_char ) ) {
-			$sort_field = 'post_modified';
-		}
-		if ( 'c' === $first_char ) {
-			$sort_field = 'post_date';
-		}
-		if ( 't' === $first_char ) {
-			$sort_field = 'post_title';
-		}
-		if ( 'a' === $second_char ) {
-			$sort_sequence = ' ASC';
-		}
-		if ( 'd' === $second_char ) {
-			$sort_sequence = ' DESC';
-		}
-
-		$order = $sort_field . $sort_sequence;
-
-		// Perform validation of passed parameters.
-
-		$error = false;
-		if ( ! is_numeric( $list_limit ) ) {
-			$code .= adl_report_error( __( 'The limit is invalid - it must be a number', 'simple-draft-list' ), $plugin_name, false );
-			$error = true;
-		}
-		if ( ! is_numeric( $words ) ) {
-			$code .= adl_report_error( __( 'The minimum number of words is invalid - it must be a number', 'simple-draft-list' ), $plugin_name, false );
-			$error = true;
-		}
-		if ( ( '' === $sort_field ) || ( '' === $sort_sequence ) ) {
-			$code .= adl_report_error( __( 'The order is invalid - please view the instructions for valid combinations', 'simple-draft-list' ), $plugin_name, false );
-			$error = true;
-		}
-		if ( ( 'post' !== $list_type ) && ( 'page' !== $list_type ) && ( '' !== $list_type ) ) {
-			$code .= adl_report_error( __( "The list type is invalid - it must be blank, 'post' or 'page'.", 'simple-draft-list' ), $plugin_name, false );
-			$error = true;
-		}
-		if ( ( 'no' !== $scheduled ) && ( 'yes' !== $scheduled ) ) {
-			$code .= adl_report_error( __( "The scheduled parameter must be either 'Yes' or 'No'", 'simple-draft-list' ), $plugin_name, false );
-			$error = true;
-		}
-		if ( ( 'no' !== $cache_time ) && ( ! is_numeric( $cache_time ) ) ) {
-			$code .= adl_report_error( __( "The cache time is invalid - it should either be a number or 'No'", 'simple-draft-list' ), $plugin_name, false );
-			$error = true;
-		}
-		if ( strpos( $template, '%draft%' ) === false && strpos( $template, '{{draft}}' ) === false ) {
-			$code .= adl_report_error( __( 'The template must include the {{draft}} tag', 'simple-draft-list' ), $plugin_name, false );
-			$error = true;
+		// Define the type of list required.
+		$type = array( 'post', 'page' );
+		if ( ( 'post' == $list_type ) || ( 'page' == $list_type ) ) {
+			$type = $list_type;
 		}
 
-		// Calculate created and modified dates to compare with.
+		$status = array( 'draft' );
 
-		$far_past = '2 January 1970';
+		if ( $scheduled || 'yes' == $scheduled ) {
+			$status = array_push( $status, 'future' );
+		}
+		if ( $pending || 'yes' == $pending ) {
+			$status = array_push( $status, 'pending' );
+		}
 
-		if ( '' !== $created ) {
-			$created = '-' . $created;
+		// Define icon folder.
+		if ( '' == $icon_folder ) {
+			$icon_folder = plugins_url( 'images/', dirname( __FILE__ ) );
 		} else {
-			$created = $far_past;
+			$icon_folder = get_bloginfo( 'template_url' ) . '/' . $icon_folder . '/';
 		}
-		$created = strtotime( $created );
-		if ( ( -1 === $created ) || ( ! $created ) ) {
-			$code .= adl_report_error( __( 'The created parameter is invalid', 'simple-draft-list' ), $plugin_name, false );
-			$error = true;
-		}
-		$created = date( 'Y-m-d H:i:s', $created );
 
-		if ( '' !== $modified ) {
-			$modified = '-' . $modified;
+		// Has a word or character count been requested?
+		if ( ( $words > 0 ) || ( strpos( $template, '%words%' ) != false ) || ( strpos( $template, '{{words}}' ) != false ) || ( strpos( $template, '%chars%' ) != false ) || ( strpos( $template, '%chars+space%' ) != false ) || ( strpos( $template, '{{chars+space}}' ) != false ) ) {
+			$sql_content = ', post_content';
+			$count       = true;
 		} else {
-			$modified = $far_past;
+			$sql_content = '';
+			$count       = false;
 		}
-		$modified = strtotime( $modified );
-		if ( ( -1 === $modified ) || ( ! $modified ) ) {
-			$code .= adl_report_error( __( 'The modified parameter is invalid', 'simple-draft-list' ), $plugin_name, false );
-			$error = true;
-		}
-		$modified = date( 'Y-m-d H:i:s', $modified );
 
-		if ( ! $error ) {
+		// Extract drafts from database based on parameters.
+		$args = array(
+			'post_status' => $status,
+			'post_type'   => $type,
+			'numberposts' => 99,
+			'orderby'     => $sort_field,
+			'sort_order'  => $sort_sequence,
+		);
 
-			// Define the type of list required.
+		$drafts = get_posts( $args );
 
-			if ( ( 'post' === $list_type ) || ( 'page' === $list_type ) ) {
-				$type = " AND post_type = '" . $list_type . "'";
-			} else {
-				$type = " AND (post_type = 'post' OR post_type = 'page')";
+		// Loop through and output results.
+		if ( $drafts ) {
+
+			// If template contains list tags at beginning, wrap these around output.
+			$list = false;
+			if ( ( ( '%ol%' == substr( $template, 0, 4 ) ) || ( '%ul%' == substr( $template, 0, 4 ) ) ) && ( 1 != $list_limit ) ) {
+				$list_type = substr( $template, 1, 2 );
+				$code     .= '<' . $list_type . ">\n";
+				$list      = true;
+
+				// Remove any OL and UL tags.
+				$template = str_replace( '%' . $list_type . '%', '', $template );
 			}
 
-			$status = '';
+			if ( ( ( '{{ol}}' == substr( $template, 0, 6 ) ) || ( '{{ul}}' == substr( $template, 0, 6 ) ) ) && ( 1 != $list_limit ) ) {
+				$list_type = substr( $template, 2, 2 );
+				$code     .= '<' . $list_type . ">\n";
+				$list      = true;
 
-			if ( 'no' !== $scheduled && false !== $scheduled ) {
-				$status .= " OR post_status = 'future'";
-			}
-			if ( $pending ) {
-				$status .= " OR post_status = 'pending'";
-			}
-
-			// Define icon folder.
-
-			if ( '' === $icon_folder ) {
-				$icon_folder = plugins_url( 'images/', dirname( __FILE__ ) );
-			} else {
-				$icon_folder = get_bloginfo( 'template_url' ) . '/' . $icon_folder . '/';
+				// Remove any OL and UL tags.
+				$template = str_replace( '{{' . $list_type . '}}', '', $template );
 			}
 
-			// Has a word or character count been requested?
+			$valid_draft = 1;
+			foreach ( $drafts as $draft_data ) {
 
-			if ( ( $words > 0 ) || ( strpos( $template, '%words%' ) !== false ) || ( strpos( $template, '{{words}}' ) !== false ) || ( strpos( $template, '%chars%' ) !== false ) || ( strpos( $template, '%chars+space%' ) !== false ) || ( strpos( $template, '{{chars+space}}' ) !== false ) ) {
-				$sql_content = ', post_content';
-				$count       = true;
-			} else {
-				$sql_content = '';
-				$count       = false;
-			}
-
-			// Extract drafts from database based on parameters.
-
-			global $wpdb;
-
-			$drafts = $wpdb->get_results( "SELECT A.id, post_type, post_title, post_status, display_name, user_url, post_date, post_modified" . $sql_content . " FROM $wpdb->posts A, $wpdb->users B WHERE B.ID = A.post_author AND (post_status = 'draft'" . $status . ") AND post_title NOT LIKE '!%'" . $type . " ORDER BY " . $order );
-
-			// Loop through and output results.
-
-			if ( $drafts ) {
-
-				// If template contains list tags at beginning, wrap these around output.
-
-				$list = false;
-				if ( ( ( '%ol%' === substr( $template, 0, 4 ) ) || ( '%ul%' === substr( $template, 0, 4 ) ) ) && ( 1 !== $list_limit ) ) {
-					$list_type = substr( $template, 1, 2 );
-					$code     .= '<' . $list_type . ">\n";
-					$list      = true;
-
-					// Remove any OL and UL tags.
-
-					$template = str_replace( '%' . $list_type . '%', '', $template );
-				}
-
-				if ( ( ( '{{ol}}' === substr( $template, 0, 6 ) ) || ( '{{ul}}' === substr( $template, 0, 6 ) ) ) && ( 1 !== $list_limit ) ) {
-					$list_type = substr( $template, 2, 2 );
-					$code     .= '<' . $list_type . ">\n";
-					$list      = true;
-
-					// Remove any OL and UL tags.
-
-					$template = str_replace( '{{' . $list_type . '}}', '', $template );
-				}
-
-				$valid_draft = 1;
-				foreach ( $drafts as $draft_data ) {
+				// Skip the post if the title beings with an exclamation mark.
+				$post_title = $draft_data->post_title;
+				if ( '!' == substr( $post_title, 0, 1 ) ) {
 
 					// Extract fields from MySQL results.
-
-					$post_id       = $draft_data->id;
+					$post_id       = $draft_data->ID;
 					$post_type     = $draft_data->post_type;
 					$draft_title   = $draft_data->post_title;
 					$post_created  = $draft_data->post_date;
@@ -316,7 +267,6 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 					}
 
 					// Check if the post has enough words in it.
-
 					if ( $count && $post_length <= $words ) {
 						$enough_words = false;
 					} else {
@@ -324,21 +274,18 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 					}
 
 					// Does the current user have editor privileges for the current post type.
-
-					if ( ( ( current_user_can( 'edit_posts' ) ) && ( 'post' === $post_type ) ) || ( ( current_user_can( 'edit_pages' ) ) && ( 'page' === $post_type ) ) ) {
+					if ( ( ( current_user_can( 'edit_posts' ) ) && ( 'post' == $post_type ) ) || ( ( current_user_can( 'edit_pages' ) ) && ( 'page' == $post_type ) ) ) {
 						$can_edit = true;
 					} else {
 						$can_edit = false;
 					}
 
 					// If the current user can edit then allow a blank title.
-
-					if ( ( '' === $draft_title ) && ( $can_edit ) ) {
+					if ( ( '' == $draft_title ) && ( $can_edit ) ) {
 						$draft_title = __( '[No Title]', 'simple-draft-list' );
 					}
 
 					// Work out whether created and/or modified date is acceptable.
-
 					if ( ( $post_created > $created ) && ( $post_modified > $modified ) ) {
 						$date_accept = true;
 					} else {
@@ -347,7 +294,6 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 
 					// Only output if the meta isn't set to exclude it, the limit hasn't been reached,
 					// there are enough words in the post, the dates are fine and the title isn't blank.
-
 					if ( ( $date_accept ) && ( $enough_words ) && ( '' != $draft_title ) && ( 'yes' != strtolower( get_post_meta( $post_id, 'draft_hide', true ) ) ) && ( ( 0 == $list_limit ) || ( $valid_draft <= $list_limit ) ) ) {
 
 						$post_status = $draft_data->post_status;
@@ -359,7 +305,6 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 						}
 
 						// Build line.
-
 						if ( $list ) {
 							$this_line = "\t<li>";
 						} else {
@@ -371,9 +316,8 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 						}
 
 						// Replace the icon tag.
-
 						$alt_title = __( 'Scheduled', 'simple-draft-list' );
-						if ( 'future' === $post_status ) {
+						if ( 'future' == $post_status ) {
 							$icon_url = '<img src="' . $icon_folder . 'scheduled.png" alt="' . $alt_title . '" title="' . $alt_title . '">';
 						} else {
 							$icon_url = '';
@@ -381,10 +325,9 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 						$this_line = str_replace( '{{icon}}', $icon_url, $this_line );
 
 						// Replace the author tag.
-
 						$this_line = str_replace( '{{author}}', $author, $this_line );
 
-						if ( '' !== $author_url ) {
+						if ( '' != $author_url ) {
 							$author_link = '<a href="' . $author_url . '">' . $author . '</a>';
 						} else {
 							$author_link = $author;
@@ -392,8 +335,7 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 						$this_line = str_replace( '{{author+link}}', $author_link, $this_line );
 
 						// Replace the draft tag.
-
-						if ( '' !== $draft_title ) {
+						if ( '' != $draft_title ) {
 							$draft = $draft_title;
 						} else {
 							$draft = __( '(no title)', 'simple-draft-list' );
@@ -404,69 +346,57 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 						$this_line = str_replace( '{{draft}}', $draft, $this_line );
 
 						// Replace the created date.
-
 						$created_date = date( $date_format, strtotime( $post_created ) );
 						$this_line    = str_replace( '{{created}}', $created_date, $this_line );
 
 						// Replace the modified date.
-
 						$modified_date = date( $date_format, strtotime( $post_modified ) );
 						$this_line     = str_replace( '{{modified}}', $modified_date, $this_line );
 
 						// Replace the word and character counts.
-
 						if ( $count ) {
-							if ( strpos( $this_line, '{{words}}' ) !== false ) {
+							if ( strpos( $this_line, '{{words}}' ) != false ) {
 								$this_line = str_replace( '{{words}}', number_format( $word_count ), $this_line );
 							}
-							if ( strpos( $this_line, '{{chars}}' ) !== false ) {
+							if ( strpos( $this_line, '{{chars}}' ) != false ) {
 								$this_line = str_replace( '{{chars}}', number_format( strlen( $post_content ) - substr_count( $post_content, ' ' ) ), $this_line );
 							}
-							if ( strpos( $this_line, '{{chars+space}}' ) !== false ) {
+							if ( strpos( $this_line, '{{chars+space}}' ) != false ) {
 								$this_line = str_replace( '{{chars+space}}', number_format( strlen( $post_content ) ), $this_line );
 							}
 						}
 
 						// Replace the category.
-
 						$category = get_the_category( $post_id );
 						$category = $category[0]->cat_name;
-						if ( 'Uncategorized' === $category ) {
+						if ( 'Uncategorized' == $category ) {
 							$category = '';
 						}
 						$this_line = str_replace( '{{category}}', $category, $this_line );
 
 						// Replace the categories.
-
 						$category_list = '';
 						foreach ( ( get_the_category( $post_id ) ) as $category ) {
-							if ( 'Uncategorized' !== $category->cat_name ) {
+							if ( 'Uncategorized' != $category->cat_name ) {
 								$category_list .= ', ' . $category->cat_name;
 							}
 						}
-						if ( '' !== $category_list ) {
+						if ( '' != $category_list ) {
 							$category_list = substr( $category_list, 2 );
 						}
 
 						$this_line = str_replace( '{{categories}}', $category_list, $this_line );
 
 						// Now add the current line to the overall code output.
-
 						$code .= $this_line . "\n";
 						$valid_draft++;
 					}
 				}
-
-				if ( $list ) {
-					$code .= '</' . $list_type . '>';
-				}
 			}
-		}
 
-		// Saving resulting output to cache.
-
-		if ( ( 'no' !== $cache_time ) && ( ! $error ) ) {
-			set_transient( $cache_key, $code, HOUR_IN_SECONDS * $cache_time );
+			if ( $list ) {
+				$code .= '</' . $list_type . '>';
+			}
 		}
 	}
 
@@ -485,14 +415,14 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 function adl_convert_to_template( $icon = '', $author = '' ) {
 
 	$template = '{{ul}}';
-	if ( strtolower( $icon ) === 'left' ) {
+	if ( strtolower( $icon ) == 'left' ) {
 		$template .= '{{icon}}&nbsp;';
 	}
 	$template .= '{{draft}}';
-	if ( strtolower( $author ) === 'yes' ) {
+	if ( strtolower( $author ) == 'yes' ) {
 		$template .= '&nbsp;({{author}})';
 	}
-	if ( strtolower( $icon ) === 'right' ) {
+	if ( strtolower( $icon ) == 'right' ) {
 		$template .= '&nbsp;{{icon}}';
 	}
 

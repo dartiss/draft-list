@@ -41,7 +41,7 @@ function adl_custom_box( $post ) {
 
 	echo '<label for="adl_hide">' . esc_html__( 'Hide from Draft List?', 'simple-draft-list' ) . '&nbsp;</label> ';
 	echo '<input type="checkbox" id="adl_hide" name="adl_hide" value="Yes"';
-	if ( 'yes' === strtolower( get_post_meta( $post->ID, 'draft_hide', true ) ) ) {
+	if ( 'yes' == strtolower( get_post_meta( $post->ID, 'draft_hide', true ) ) ) {
 		echo ' checked="checked"';
 	}
 	echo ' />';
@@ -74,7 +74,7 @@ function adl_save_postdata( $post_id ) {
 	// Check permissions.
 
 	if ( isset( $_POST['post_type'] ) ) { // Input var okay.
-		if ( 'page' === sanitize_text_field( $_POST['post_type'] ) ) { // Input var okay.
+		if ( 'page' == sanitize_text_field( $_POST['post_type'] ) ) { // Input var okay.
 			if ( ! current_user_can( 'edit_page', $post_id ) ) {
 				return;
 			}
@@ -92,12 +92,8 @@ function adl_save_postdata( $post_id ) {
 	} else {
 		$data = '';
 	}
+
 	update_post_meta( $post_id, 'draft_hide', $data );
-
-	// Whenever a post is saved, delete any cached draft list.
-
-	global $wpdb;
-	$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name LIKE '%transient_adl_%'" );
 
 }
 

@@ -39,7 +39,7 @@ The following shortcode parameters are valid...
 * **folder=** : The scheduled icon will be, by default, the one in the plugin folder named `scheduled.png`. However, use this parameter to specify a folder within your theme that you'd prefer the icon to be fetched from.
 * **limit=** : The maximum number of draft items to display. The default is 0, which is unlimited.
 * **order=** : This is the sequence that you'd like to order the results in. It consists of 2 codes - the first is either `t`, `m` or `c` to represent the title, modified date or created date and the second is `a` or `d` for ascending or descending. Therefore `order=td` will display the results in descending title sequence. The default is descending modified date.
-* **pending=** : True or false, where to include pending posts in the result. By default, pending posts will be included.
+* **pending=** : True or false, where to include pending posts in the result. By default, pending posts will not be included.
 * **scheduled=** : True or false, where to include scheduled posts in the result. By default, scheduled posts will be included.
 * **template=** : This is the template which formats the output. See the section below on * *Templates** for further information.
 * **type=** : This allows you to limit the results to either `post` or `page`. The default is both.
