@@ -13,6 +13,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 
+**If you're upgrading from a previous release of Draft List (i.e. pre version 2.5) please check out the FAQ - a number of changes have been made in this release that you need to be aware of. Also, there's big news for version 3.**
+
 Draft List allows you to both manage your draft and scheduled posts more easily but also to promote them by showing them on your site via shortcode or widget - use it to show your visitors what's "coming soon" or as a great SEO tool.
 
 How easy is it display a list of draft posts? Here's an example of how you could use it in a post or page...
@@ -23,12 +25,14 @@ This would display a list of up to 5 draft posts in ascending modified date sequ
 
 Key features include...
 
-* Widget/shortcode output is highly configurable - create your own look by using a template, identify scheduled posts with an icon, sequence the results in various ways and even narrow down the results to a specific timeframe
+* Both widgets and shortcodes are available for you to show off your up-coming content
+* Output is highly configurable - create your own look by using a template, identify scheduled posts with an icon, sequence the results in various ways and even narrow down the results to a specific timeframe
 * Click on any of the drafts posts listed to edit them
-* Output is cached for streamlined performance
 * A meta box in the editor screen allows you to omit individual posts from any list outputs
 
-Please visit the [Github page](https://github.com/dartiss/draft-list "Github") for the latest code development, planned enhancements and known issues.
+Iconography is courtesy of the very talented [Janki Rathod](https://www.linkedin.com/in/jankirathore/) ♥️
+
+👉 Please visit the [Github page](https://github.com/dartiss/draft-list "Github") for the latest code development, planned enhancements and known issues 👈
 
 == Shortcode Parameters ==
 
@@ -101,18 +105,43 @@ Draft List can be found and installed via the Plugin menu within WordPress admin
 
 Voila! It's ready to go.
 
+== Frequently Asked Questions ==
+
+= I've upgraded from a version before 2.5 and I hear things have changed. What's happening? =
+
+From version 2.5, 2 features have been removed...
+
+1. Caching has gone. This release has had some massive performance improvements which means it was no longer needed. It, more often than not, caused issues and many people have native caching on their site anyway.
+2. The draft menus options have been removed. I've moved that functionality off to another plugin named [Draft Links](https://wordpress.org/plugins/draft-links/). If you want the menu links back, please install that. Why have they been removed? For a start, some people were installing this plugin JUST for that functionality, so it made sense for me to separate it. Additionally, the next FAQ answer is part of this too...
+
+= What do I need to know about version 3? =
+
+Version 3 of this plugin is coming soon and it will be a breaking release. In other words, your existing shortcode will stop working, if you're upgrading from an earlier version - you'll need to make changes to it for it to work again.
+
+When this plugin first started it was all about drafts. However, that's changed as it's become obvious that what this plugin should be about is any unpublished content - not just drafts. It could be pending or scheduled posts, for example. Basically, it should be so much more. So, version 3 will be.
+
+It will be renamed and the draft element de-emphasised. This will include renaming the shortcode and various parameters too (hence the breaking element of it). If you have automatic updates switched on for this plugin, I'd recommend turning them off.
+
+The good news, however, is that the plugin will include a raft of new and powerful features, including the ability to limit unpublished post output to specific categories, amongst other things.
+
 == Screenshots ==
 
-1. An example list of draft posts
+1. An example output of draft posts
 
 == Changelog ==
 
-[Learn more about my version numbering methodology](https://artiss.blog/2016/09/wordpress-plugin-versioning/ "WordPress Plugin Versioning")
+I use symantic versioning, with the first release being 1.0.
 
-= 3.0 =
-This is a brand new version with many incompatibilities with the previous releases.
-* Maintenance: Renamed the plugin
-
+= 2.5 =
+* Enhancement: Total re-write of the post retrieval code
+* Enhancement: Brought code up to PHPCS coding standards - hardly a line has been untouched
+* Maintenance: Removed the menu changes (links to draft posts)
+* Maintenance: Removed Caching
+* Maintenance: Rename, concatenation and general shuffle around of the various plugin files
+* Maintenance: Updates to the various plugin meta
+* Bug: Resolved inconsistencies between `pending` and `scheduled` parameters, where one accepting boolean and yes/no and, well, the other didn't
+* Bug: Fixed issue where default values were not being loaded when a widget was being displayed without settings being changed
+* Bug: Fixed a bunch of existing bugs, including various widget issues
 
 = 2.4 =
 * Enhancement: New option to include pending posts in lists
@@ -229,5 +258,5 @@ This is a brand new version with many incompatibilities with the previous releas
 
 == Upgrade Notice ==
 
-= 3.0 =
-* ⚠️ Brand new release, incompatible with previous versions. Checks the FAQ before upgrading!
+= 2.5 =
+* Bugs quashed, some functionality changes and the code is so, so sparkly clean

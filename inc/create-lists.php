@@ -191,11 +191,11 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 
 		$status = array( 'draft' );
 
-		if ( $scheduled || 'yes' == $scheduled ) {
-			$status = array_push( $status, 'future' );
+		if ( true === $scheduled || 'true' == $scheduled || 'yes' == $scheduled ) {
+			array_push( $status, 'future' );
 		}
-		if ( $pending || 'yes' == $pending ) {
-			$status = array_push( $status, 'pending' );
+		if ( true === $pending || 'true' == $pending || 'yes' == $pending ) {
+			array_push( $status, 'pending' );
 		}
 
 		// Define icon folder.
@@ -225,178 +225,175 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 
 		$drafts = get_posts( $args );
 
-		// Loop through and output results.
-		if ( $drafts ) {
+		// If template contains list tags at beginning, wrap these around output.
+		$list = false;
+		if ( ( ( '%ol%' == substr( $template, 0, 4 ) ) || ( '%ul%' == substr( $template, 0, 4 ) ) ) && ( 1 != $list_limit ) ) {
+			$list_type = substr( $template, 1, 2 );
+			$code     .= '<' . $list_type . ">\n";
+			$list      = true;
 
-			// If template contains list tags at beginning, wrap these around output.
-			$list = false;
-			if ( ( ( '%ol%' == substr( $template, 0, 4 ) ) || ( '%ul%' == substr( $template, 0, 4 ) ) ) && ( 1 != $list_limit ) ) {
-				$list_type = substr( $template, 1, 2 );
-				$code     .= '<' . $list_type . ">\n";
-				$list      = true;
+			// Remove any OL and UL tags.
+			$template = str_replace( '%' . $list_type . '%', '', $template );
+		}
 
-				// Remove any OL and UL tags.
-				$template = str_replace( '%' . $list_type . '%', '', $template );
-			}
+		if ( ( ( '{{ol}}' == substr( $template, 0, 6 ) ) || ( '{{ul}}' == substr( $template, 0, 6 ) ) ) && ( 1 != $list_limit ) ) {
+			$list_type = substr( $template, 2, 2 );
+			$code     .= '<' . $list_type . ">\n";
+			$list      = true;
 
-			if ( ( ( '{{ol}}' == substr( $template, 0, 6 ) ) || ( '{{ul}}' == substr( $template, 0, 6 ) ) ) && ( 1 != $list_limit ) ) {
-				$list_type = substr( $template, 2, 2 );
-				$code     .= '<' . $list_type . ">\n";
-				$list      = true;
+			// Remove any OL and UL tags.
+			$template = str_replace( '{{' . $list_type . '}}', '', $template );
+		}
 
-				// Remove any OL and UL tags.
-				$template = str_replace( '{{' . $list_type . '}}', '', $template );
-			}
+		$valid_draft = 1;
+		foreach ( $drafts as $draft_data ) {
 
-			$valid_draft = 1;
-			foreach ( $drafts as $draft_data ) {
+			// Skip the post if the title beings with an exclamation mark.
+			$post_title = $draft_data->post_title;
 
-				// Skip the post if the title beings with an exclamation mark.
-				$post_title = $draft_data->post_title;
-				if ( '!' == substr( $post_title, 0, 1 ) ) {
+			if ( '!' != substr( $post_title, 0, 1 ) ) {
 
-					// Extract fields from MySQL results.
-					$post_id       = $draft_data->ID;
-					$post_type     = $draft_data->post_type;
-					$draft_title   = $draft_data->post_title;
-					$post_created  = $draft_data->post_date;
-					$post_modified = $draft_data->post_modified;
+				// Extract fields from MySQL results.
+				$post_id       = $draft_data->ID;
+				$post_type     = $draft_data->post_type;
+				$draft_title   = $draft_data->post_title;
+				$post_created  = $draft_data->post_date;
+				$post_modified = $draft_data->post_modified;
+				if ( $count ) {
+					$post_content = $draft_data->post_content;
+					$post_length  = str_word_count( $post_content );
+				}
+
+				// Check if the post has enough words in it.
+				if ( $count && $post_length <= $words ) {
+					$enough_words = false;
+				} else {
+					$enough_words = true;
+				}
+
+				// Does the current user have editor privileges for the current post type.
+				if ( ( ( current_user_can( 'edit_posts' ) ) && ( 'post' == $post_type ) ) || ( ( current_user_can( 'edit_pages' ) ) && ( 'page' == $post_type ) ) ) {
+					$can_edit = true;
+				} else {
+					$can_edit = false;
+				}
+
+				// If the current user can edit then allow a blank title.
+				if ( ( '' == $draft_title ) && ( $can_edit ) ) {
+					$draft_title = __( '[No Title]', 'simple-draft-list' );
+				}
+
+				// Work out whether created and/or modified date is acceptable.
+				if ( ( $post_created > $created ) && ( $post_modified > $modified ) ) {
+					$date_accept = true;
+				} else {
+					$date_accept = false;
+				}
+
+				// Only output if the meta isn't set to exclude it, the limit hasn't been reached,
+				// there are enough words in the post, the dates are fine and the title isn't blank.
+				if ( ( $date_accept ) && ( $enough_words ) && ( '' != $draft_title ) && ( 'yes' != strtolower( get_post_meta( $post_id, 'draft_hide', true ) ) ) && ( ( 0 == $list_limit ) || ( $valid_draft <= $list_limit ) ) ) {
+
+					$post_status = $draft_data->post_status;
+					$author      = $draft_data->display_name;
+					$author_url  = $draft_data->user_url;
+
 					if ( $count ) {
 						$post_content = $draft_data->post_content;
-						$post_length  = str_word_count( $post_content );
 					}
 
-					// Check if the post has enough words in it.
-					if ( $count && $post_length <= $words ) {
-						$enough_words = false;
+					// Build line.
+					if ( $list ) {
+						$this_line = "\t<li>";
 					} else {
-						$enough_words = true;
+						$this_line = '';
+					}
+					$this_line .= $template;
+					if ( $list ) {
+						$this_line .= '</li>';
 					}
 
-					// Does the current user have editor privileges for the current post type.
-					if ( ( ( current_user_can( 'edit_posts' ) ) && ( 'post' == $post_type ) ) || ( ( current_user_can( 'edit_pages' ) ) && ( 'page' == $post_type ) ) ) {
-						$can_edit = true;
+					// Replace the icon tag.
+					$alt_title = __( 'Scheduled', 'simple-draft-list' );
+					if ( 'future' == $post_status ) {
+						$icon_url = '<img src="' . $icon_folder . 'scheduled.png" alt="' . $alt_title . '" title="' . $alt_title . '">';
 					} else {
-						$can_edit = false;
+						$icon_url = '';
 					}
+					$this_line = str_replace( '{{icon}}', $icon_url, $this_line );
 
-					// If the current user can edit then allow a blank title.
-					if ( ( '' == $draft_title ) && ( $can_edit ) ) {
-						$draft_title = __( '[No Title]', 'simple-draft-list' );
-					}
+					// Replace the author tag.
+					$this_line = str_replace( '{{author}}', $author, $this_line );
 
-					// Work out whether created and/or modified date is acceptable.
-					if ( ( $post_created > $created ) && ( $post_modified > $modified ) ) {
-						$date_accept = true;
+					if ( '' != $author_url ) {
+						$author_link = '<a href="' . $author_url . '">' . $author . '</a>';
 					} else {
-						$date_accept = false;
+						$author_link = $author;
+					}
+					$this_line = str_replace( '{{author+link}}', $author_link, $this_line );
+
+					// Replace the draft tag.
+					if ( '' != $draft_title ) {
+						$draft = $draft_title;
+					} else {
+						$draft = __( '(no title)', 'simple-draft-list' );
+					}
+					if ( $can_edit ) {
+						$draft = '<a href="' . home_url() . '/wp-admin/post.php?post=' . $post_id . '&action=edit" rel="nofollow">' . $draft . '</a>';
+					}
+					$this_line = str_replace( '{{draft}}', $draft, $this_line );
+
+					// Replace the created date.
+					$created_date = date( $date_format, strtotime( $post_created ) );
+					$this_line    = str_replace( '{{created}}', $created_date, $this_line );
+
+					// Replace the modified date.
+					$modified_date = date( $date_format, strtotime( $post_modified ) );
+					$this_line     = str_replace( '{{modified}}', $modified_date, $this_line );
+
+					// Replace the word and character counts.
+					if ( $count ) {
+						if ( strpos( $this_line, '{{words}}' ) != false ) {
+							$this_line = str_replace( '{{words}}', number_format( $word_count ), $this_line );
+						}
+						if ( strpos( $this_line, '{{chars}}' ) != false ) {
+							$this_line = str_replace( '{{chars}}', number_format( strlen( $post_content ) - substr_count( $post_content, ' ' ) ), $this_line );
+						}
+						if ( strpos( $this_line, '{{chars+space}}' ) != false ) {
+							$this_line = str_replace( '{{chars+space}}', number_format( strlen( $post_content ) ), $this_line );
+						}
 					}
 
-					// Only output if the meta isn't set to exclude it, the limit hasn't been reached,
-					// there are enough words in the post, the dates are fine and the title isn't blank.
-					if ( ( $date_accept ) && ( $enough_words ) && ( '' != $draft_title ) && ( 'yes' != strtolower( get_post_meta( $post_id, 'draft_hide', true ) ) ) && ( ( 0 == $list_limit ) || ( $valid_draft <= $list_limit ) ) ) {
-
-						$post_status = $draft_data->post_status;
-						$author      = $draft_data->display_name;
-						$author_url  = $draft_data->user_url;
-
-						if ( $count ) {
-							$post_content = $draft_data->post_content;
-						}
-
-						// Build line.
-						if ( $list ) {
-							$this_line = "\t<li>";
-						} else {
-							$this_line = '';
-						}
-						$this_line .= $template;
-						if ( $list ) {
-							$this_line .= '</li>';
-						}
-
-						// Replace the icon tag.
-						$alt_title = __( 'Scheduled', 'simple-draft-list' );
-						if ( 'future' == $post_status ) {
-							$icon_url = '<img src="' . $icon_folder . 'scheduled.png" alt="' . $alt_title . '" title="' . $alt_title . '">';
-						} else {
-							$icon_url = '';
-						}
-						$this_line = str_replace( '{{icon}}', $icon_url, $this_line );
-
-						// Replace the author tag.
-						$this_line = str_replace( '{{author}}', $author, $this_line );
-
-						if ( '' != $author_url ) {
-							$author_link = '<a href="' . $author_url . '">' . $author . '</a>';
-						} else {
-							$author_link = $author;
-						}
-						$this_line = str_replace( '{{author+link}}', $author_link, $this_line );
-
-						// Replace the draft tag.
-						if ( '' != $draft_title ) {
-							$draft = $draft_title;
-						} else {
-							$draft = __( '(no title)', 'simple-draft-list' );
-						}
-						if ( $can_edit ) {
-							$draft = '<a href="' . home_url() . '/wp-admin/post.php?post=' . $post_id . '&action=edit" rel="nofollow">' . $draft . '</a>';
-						}
-						$this_line = str_replace( '{{draft}}', $draft, $this_line );
-
-						// Replace the created date.
-						$created_date = date( $date_format, strtotime( $post_created ) );
-						$this_line    = str_replace( '{{created}}', $created_date, $this_line );
-
-						// Replace the modified date.
-						$modified_date = date( $date_format, strtotime( $post_modified ) );
-						$this_line     = str_replace( '{{modified}}', $modified_date, $this_line );
-
-						// Replace the word and character counts.
-						if ( $count ) {
-							if ( strpos( $this_line, '{{words}}' ) != false ) {
-								$this_line = str_replace( '{{words}}', number_format( $word_count ), $this_line );
-							}
-							if ( strpos( $this_line, '{{chars}}' ) != false ) {
-								$this_line = str_replace( '{{chars}}', number_format( strlen( $post_content ) - substr_count( $post_content, ' ' ) ), $this_line );
-							}
-							if ( strpos( $this_line, '{{chars+space}}' ) != false ) {
-								$this_line = str_replace( '{{chars+space}}', number_format( strlen( $post_content ) ), $this_line );
-							}
-						}
-
-						// Replace the category.
-						$category = get_the_category( $post_id );
-						$category = $category[0]->cat_name;
-						if ( 'Uncategorized' == $category ) {
-							$category = '';
-						}
-						$this_line = str_replace( '{{category}}', $category, $this_line );
-
-						// Replace the categories.
-						$category_list = '';
-						foreach ( ( get_the_category( $post_id ) ) as $category ) {
-							if ( 'Uncategorized' != $category->cat_name ) {
-								$category_list .= ', ' . $category->cat_name;
-							}
-						}
-						if ( '' != $category_list ) {
-							$category_list = substr( $category_list, 2 );
-						}
-
-						$this_line = str_replace( '{{categories}}', $category_list, $this_line );
-
-						// Now add the current line to the overall code output.
-						$code .= $this_line . "\n";
-						$valid_draft++;
+					// Replace the category.
+					$category = get_the_category( $post_id );
+					$category = $category[0]->cat_name;
+					if ( 'Uncategorized' == $category ) {
+						$category = '';
 					}
+					$this_line = str_replace( '{{category}}', $category, $this_line );
+
+					// Replace the categories.
+					$category_list = '';
+					foreach ( ( get_the_category( $post_id ) ) as $category ) {
+						if ( 'Uncategorized' != $category->cat_name ) {
+							$category_list .= ', ' . $category->cat_name;
+						}
+					}
+					if ( '' != $category_list ) {
+						$category_list = substr( $category_list, 2 );
+					}
+
+					$this_line = str_replace( '{{categories}}', $category_list, $this_line );
+
+					// Now add the current line to the overall code output.
+					$code .= $this_line . "\n";
+					$valid_draft++;
 				}
 			}
+		}
 
-			if ( $list ) {
-				$code .= '</' . $list_type . '>';
-			}
+		if ( $list ) {
+			$code .= '</' . $list_type . '>';
 		}
 	}
 

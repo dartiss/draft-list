@@ -202,8 +202,8 @@ class DraftListWidget extends WP_Widget {
 		// Show pending posts.
 		$field_id   = $this->get_field_id( 'pending' );
 		$field_name = $this->get_field_name( 'pending' );
-		echo "\r\n" . '<p><label for="' . esc_html( $field_id ) . '">' . esc_html__( 'Show Pending Posts', 'simple-draft-list' ) . ': </label><input type="checkbox" name="' . esc_html( $field_name ) . '" id="' . esc_html( $field_id ) . '" value=true';
-		if ( 'no' == esc_attr( $instance['pending'] ) ) {
+		echo "\r\n" . '<p><label for="' . esc_html( $field_id ) . '">' . esc_html__( 'Show Pending Posts', 'simple-draft-list' ) . ': </label><input type="checkbox" name="' . esc_html( $field_name ) . '" id="' . esc_html( $field_id ) . '" value="yes"';
+		if ( 'yes' == esc_attr( $instance['pending'] ) ) {
 			echo " checked='checked'";
 		}
 		echo '/></p>';
@@ -254,7 +254,8 @@ function adl_load_widget_defaults() {
 		'limit'     => '0',
 		'type'      => '',
 		'order'     => '',
-		'scheduled' => '',
+		'scheduled' => 'yes',
+		'pending'   => 'no',
 		'folder'    => '',
 		'date'      => 'F j, Y, g:i a',
 		'created'   => '',
