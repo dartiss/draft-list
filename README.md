@@ -10,9 +10,9 @@ This would display a list of up to 5 draft posts in ascending modified date sequ
 
 Features include...
 
-* Widget/shortcode output is highly configurable - create your own look by using a template, identify scheduled posts with an icon, sequence the results in various ways and even narrow down the results to a specific timeframe
-* If you're logged in, click on any of the posts listed to edit them
-* Output is cached for streamlined performance
-* A meta box in the editor screen allows you to omit individual posts from any list output
+* Both widgets and shortcodes are available for you to show off your up-coming content
+* Output is highly configurable - create your own look by using a template, identify scheduled posts with an icon, sequence the results in various ways and even narrow down the results to a specific timeframe
+* Click on any of the drafts posts listed to edit them
+* A meta box in the editor screen allows you to omit individual posts from any list outputs
 
 <p align="right"><a href="https://wordpress.org/plugins/simple-draft-list/"><img src="https://img.shields.io/wordpress/plugin/dt/simple-draft-list?label=wp.org%20downloads&style=for-the-badge">&nbsp;<img src="https://img.shields.io/wordpress/plugin/stars/simple-draft-list?color=orange&style=for-the-badge"></a></p>
