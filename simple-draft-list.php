@@ -1,39 +1,37 @@
 <?php
-/*
-Plugin Name: Draft List
-Plugin URI: https://github.com/dartiss/draft-list
-Description: Manage and promote your drafts and scheduled posts and pages.
-Version: 2.4
-Author: David Artiss
-Author URI: http://www.artiss.co.uk
-Text Domain: simple-draft-list
-*/
-
 /**
-* Draft List
-*
-* Display a list of draft posts
-*
-* @package  Artiss-Draft-List
-* @since    2.0
-*/
+ * Draft List
+ *
+ * @package           Artiss-Draft-List
+ * @author            David Artiss
+ * @license           GPL-2.0-or-later
+ *
+ * Plugin Name:       Draft List
+ * Plugin URI:        https://wordpress.org/plugins/simple-draft-list/
+ * Description:       📝 WordPress plugin to manage and promote your unpublished content.
+ * Version:           2.5
+ * Requires at least: 4.6
+ * Requires PHP:      5.3
+ * Author:            David Artiss
+ * Author URI:        https://artiss.blog
+ * Text Domain:       simple-draft-list
+ * License:           GPL v2 or later
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ *
+ * This program is free software; you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License version 2, as published by the Free Software Foundation. You may NOT assume
+ * that you can use any other version of the GPL.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
 
-define( 'ARTISS_DRAFT_LIST_VERSION', '2.4' );
+// Require the various code components - all held within the inc folder.
 
-/**
-* Code includes
-*
-* Includes for all the plugin functions
-*
-* @since    2.0
-*/
+require_once plugin_dir_path( __FILE__ ) . 'inc/setup.php';                 // Administration config.
 
-include_once( plugin_dir_path( __FILE__ ) . 'includes/generate-widget.php' );  // Set-up widget
+require_once plugin_dir_path( __FILE__ ) . 'inc/metabox.php';               // Add meta box to editor.
 
-include_once( plugin_dir_path( __FILE__ ) . 'includes/admin-config.php' );     // Administration config
+require_once plugin_dir_path( __FILE__ ) . 'inc/class-draftlistwidget.php'; // Set-up widget.
 
-include_once( plugin_dir_path( __FILE__ ) . 'includes/meta-box.php' );         // Add meta box to editor
-
-include_once( plugin_dir_path( __FILE__ ) . 'includes/shared-functions.php' ); // Get the default options
-
-include_once( plugin_dir_path( __FILE__ ) . 'includes/generate-code.php' );    // Code to output draft list
+require_once plugin_dir_path( __FILE__ ) . 'inc/create-lists.php';          // Code to output draft list.

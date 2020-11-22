@@ -1,42 +1,38 @@
 === Draft List ===
 Contributors: dartiss
 Donate link: https://artiss.blog/donate
-Tags: draft, list, SEO, sidebar, widget, coming soon
+Tags: draft, list, scheduled, SEO, widget
 Requires at least: 4.6
-Tested up to: 5.3
+Tested up to: 5.5
 Requires PHP: 5.3
-Stable tag: 2.4
+Stable tag: 2.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Manage and promote your drafts and scheduled posts and pages.
+📝 WordPress plugin to manage and promote your unpublished content.
 
 == Description ==
+
+**If you're upgrading from a previous release of Draft List (i.e. pre version 2.5) please check out the FAQ - a number of changes have been made in this release that you need to be aware of. Also, there's big news for version 3.**
 
 Draft List allows you to both manage your draft and scheduled posts more easily but also to promote them by showing them on your site via shortcode or widget - use it to show your visitors what's "coming soon" or as a great SEO tool.
 
 How easy is it display a list of draft posts? Here's an example of how you could use it in a post or page...
 
-`[drafts limit=5 type=post order=ma scheduled=no template='{{ul}}{{draft}} {{icon}}']`
+`[drafts limit=5 type=post order=ma scheduled=no template='{{ul}}{{[draft}} {{icon}}']`
 
 This would display a list of up to 5 draft posts in ascending modified date sequence, with an icon displayed to the right of each if the draft is scheduled.
 
 Key features include...
 
-* Quick links added to admin menu for going straight to your draft posts and pages
-* Menu links show the number of drafts you currently have
-* Widget/shortcode output is highly configurable - create your own look by using a template, identify scheduled posts with an icon, sequence the results in various ways and even narrow down the results to a specific timeframe
+* Both widgets and shortcodes are available for you to show off your up-coming content
+* Output is highly configurable - create your own look by using a template, identify scheduled posts with an icon, sequence the results in various ways and even narrow down the results to a specific timeframe
 * Click on any of the drafts posts listed to edit them
-* Output is cached for streamlined performance
 * A meta box in the editor screen allows you to omit individual posts from any list outputs
 
-Options coming soon…
+Iconography is courtesy of the very talented [Janki Rathod](https://www.linkedin.com/in/jankirathore/) ♥️
 
-* A dashboard widget to show a summary of draft and scheduled posts and pages
-* Quick links to be added to the admin menu for scheduled posts and pages
-* Shortcuts to be added to the Admin Bar
-
-Please visit the [Github page](https://github.com/dartiss/draft-list "Github") for the latest code development, planned enhancements and known issues.
+👉 Please visit the [Github page](https://github.com/dartiss/draft-list "Github") for the latest code development, planned enhancements and known issues 👈
 
 == Shortcode Parameters ==
 
@@ -47,13 +43,13 @@ The following shortcode parameters are valid...
 * **folder=** : The scheduled icon will be, by default, the one in the plugin folder named `scheduled.png`. However, use this parameter to specify a folder within your theme that you'd prefer the icon to be fetched from.
 * **limit=** : The maximum number of draft items to display. The default is 0, which is unlimited.
 * **order=** : This is the sequence that you'd like to order the results in. It consists of 2 codes - the first is either `t`, `m` or `c` to represent the title, modified date or created date and the second is `a` or `d` for ascending or descending. Therefore `order=td` will display the results in descending title sequence. The default is descending modified date.
-* **pending=** : Whether to include pending posts as well. Should be set to `true` or `false`. The default is `false`.
-* **scheduled=** : If specified as false then scheduled posts will not display in the list, only drafts.
+* **pending=** : True or false, where to include pending posts in the result. By default, pending posts will not be included.
+* **scheduled=** : True or false, where to include scheduled posts in the result. By default, scheduled posts will be included.
 * **template=** : This is the template which formats the output. See the section below on * *Templates** for further information.
 * **type=** : This allows you to limit the results to either `post` or `page`. The default is both.
 * **words=** : The minimum number of words that must be present in the draft for it to be included. Defaults to 0.
 
-To restrict the posts/pages to a particular timeframe you can use the following 2 parameters. You simply state, in words, how long ago the posts must be dated for e.g. "2 days", "3 months", etc.
+To restrict the posts to a particular timeframe you can use the following 2 parameters. You simply state, in words, how long ago the posts must be dated for e.g. "2 days", "3 months", etc.
 
 * **created=** : his reflects how long ago the post/page must have been created for it to be listed. For example `6 months` would only list drafts that were created in the last 6 months.
 * **modified=** : This reflects how long ago the post/page must have been modified last for it to be listed. For example `6 months` would only list drafts that have been modified in the last 6 months.
@@ -65,12 +61,12 @@ The template parameter allows you to format the output by allowing you to specif
 * **{{ul}}** - Specifies this is an un-ordered list (i.e. bullet point output). This MUST be specified at the beginning of the template if it is to be used.
 * **{{ol}}** - Specifies this is an ordered list (i.e. number output). This MUST be specified at the beginning of the template if it is to be used.
 * **{{icon}}** - This is the icon that indicates a scheduled post.
-* **{{draft}}** - This is the draft post details. This is the only **REQUIRED** tag.
+* **{{draft}}** - This is the post detail and is the only **REQUIRED** tag.
 * **{{author}}** - This is the name of the post author.
 * **{{author+link}}** - This is the name of the post author with, where available, a link to their URL.
 * **{{words}}** - The number of words in the draft post.
-* **{{chars}}** - The number of characters (exc. spaces) in the draft post.
-* **{{chars+space}}** - The number of characters (inc. spaces) in the draft post.
+* **{{chars}}** - The number of characters (exc. spaces) in the post.
+* **{{chars+space}}** - The number of characters (inc. spaces) in the post.
 * **{{created}}** - The date/time the post was created.
 * **{{modified}}** - The date/time the post was last modified.
 * **{{category}}** - Shows the first category assigned to the post.
@@ -82,7 +78,7 @@ If {{ul}} or {{ol}} are specified then all the appropriate list tags will be add
 
 If you wish to omit a page or post from the list then you can do this in 3 ways...
 
-1. By giving the post/page a title beginning with an exclamation mark. You can then remove this before publishing the page/post.
+1. By giving the post a title beginning with an exclamation mark. You can then remove this before publishing the post.
 2. The post and page editor has a meta box, where you can select to hide the page/post.
 3. You can add a custom field to a page/post with a name of 'draft_hide' and a value of 'Yes'
 
@@ -109,14 +105,43 @@ Draft List can be found and installed via the Plugin menu within WordPress admin
 
 Voila! It's ready to go.
 
+== Frequently Asked Questions ==
+
+= I've upgraded from a version before 2.5 and I hear things have changed. What's happening? =
+
+From version 2.5, 2 features have been removed...
+
+1. Caching has gone. This release has had some massive performance improvements which means it was no longer needed. It, more often than not, caused issues and many people have native caching on their site anyway.
+2. The draft menus options have been removed. I've moved that functionality off to another plugin named [Draft Links](https://wordpress.org/plugins/draft-links/). If you want the menu links back, please install that. Why have they been removed? For a start, some people were installing this plugin JUST for that functionality, so it made sense for me to separate it. Additionally, the next FAQ answer is part of this too...
+
+= What do I need to know about version 3? =
+
+Version 3 of this plugin is coming soon and it will be a breaking release. In other words, your existing shortcode will stop working, if you're upgrading from an earlier version - you'll need to make changes to it for it to work again.
+
+When this plugin first started it was all about drafts. However, that's changed as it's become obvious that what this plugin should be about is any unpublished content - not just drafts. It could be pending or scheduled posts, for example. Basically, it should be so much more. So, version 3 will be.
+
+It will be renamed and the draft element de-emphasised. This will include renaming the shortcode and various parameters too (hence the breaking element of it). If you have automatic updates switched on for this plugin, I'd recommend turning them off.
+
+The good news, however, is that the plugin will include a raft of new and powerful features, including the ability to limit unpublished post output to specific categories, amongst other things.
+
 == Screenshots ==
 
-1. An example list of draft posts
-2. Draft post information in the Admin menu
+1. An example output of draft posts
 
 == Changelog ==
 
-[Learn more about my version numbering methodology](https://artiss.blog/2016/09/wordpress-plugin-versioning/ "WordPress Plugin Versioning")
+I use symantic versioning, with the first release being 1.0.
+
+= 2.5 =
+* Enhancement: Total re-write of the post retrieval code
+* Enhancement: Brought code up to PHPCS coding standards - hardly a line has been untouched
+* Maintenance: Removed the menu changes (links to draft posts)
+* Maintenance: Removed Caching
+* Maintenance: Rename, concatenation and general shuffle around of the various plugin files
+* Maintenance: Updates to the various plugin meta
+* Bug: Resolved inconsistencies between `pending` and `scheduled` parameters, where one accepting boolean and yes/no and, well, the other didn't
+* Bug: Fixed issue where default values were not being loaded when a widget was being displayed without settings being changed
+* Bug: Fixed a bunch of existing bugs, including various widget issues
 
 = 2.4 =
 * Enhancement: New option to include pending posts in lists
@@ -233,5 +258,5 @@ Voila! It's ready to go.
 
 == Upgrade Notice ==
 
-= 2.4 =
-* A few assorted improvements, alongside some bug fixes
+= 2.5 =
+* Bugs quashed, some functionality changes and the code is so, so sparkly clean
