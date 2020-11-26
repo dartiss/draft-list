@@ -3,7 +3,7 @@ Contributors: dartiss
 Donate link: https://artiss.blog/donate
 Tags: draft, list, scheduled, SEO, widget
 Requires at least: 4.6
-Tested up to: 5.5
+Tested up to: 5.6
 Requires PHP: 5.3
 Stable tag: 2.5
 License: GPLv2 or later
@@ -30,7 +30,7 @@ Key features include...
 * Click on any of the drafts posts listed to edit them
 * A meta box in the editor screen allows you to omit individual posts from any list outputs
 
-Iconography is courtesy of the very talented [Janki Rathod](https://www.linkedin.com/in/jankirathore/) ♥️
+Iconography is courtesy of the very talented [Janki Rathod](https://www.fiverr.com/jankirathore) ♥️
 
 👉 Please visit the [Github page](https://github.com/dartiss/draft-list "Github") for the latest code development, planned enhancements and known issues 👈
 
@@ -130,7 +130,7 @@ The good news, however, is that the plugin will include a raft of new and powerf
 
 == Changelog ==
 
-I use symantic versioning, with the first release being 1.0.
+I use semantic versioning, with the first release being 1.0.
 
 = 2.5 =
 * Enhancement: Total re-write of the post retrieval code
