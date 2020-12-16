@@ -5,7 +5,7 @@ Tags: draft, list, scheduled, SEO, widget
 Requires at least: 4.6
 Tested up to: 5.6
 Requires PHP: 5.3
-Stable tag: 2.5
+Stable tag: 2.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -131,6 +131,9 @@ The good news, however, is that the plugin will include a raft of new and powerf
 == Changelog ==
 
 I use semantic versioning, with the first release being 1.0.
+
+= 2.5.1 =
+* Bug: Fixed a bug (an extra comma) that impacts users on a particular version of PHP
 
 = 2.5 =
 * Enhancement: Total re-write of the post retrieval code
@@ -258,5 +261,5 @@ I use semantic versioning, with the first release being 1.0.
 
 == Upgrade Notice ==
 
-= 2.5 =
-* Bugs quashed, some functionality changes and the code is so, so sparkly clean
+= 2.5.1 =
+* Bug fix that impacts users on one particular version of PHP

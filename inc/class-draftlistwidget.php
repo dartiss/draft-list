@@ -77,7 +77,7 @@ class DraftListWidget extends WP_Widget {
 				$instance['words'],
 				$instance['pending'],
 			),
-			'post',
+			'post'
 		);
 
 		// Output the trailer.
