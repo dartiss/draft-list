@@ -74,6 +74,7 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 	}
 
 	$plugin_name = 'Draft List';
+	$code        = '';
 
 	// Convert appropriate parameters.
 	$list_type  = strtolower( $list_type );
@@ -167,7 +168,7 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 		$code .= adl_report_error( __( 'The created parameter is invalid', 'simple-draft-list' ), $plugin_name, false );
 		$error = true;
 	}
-	$created = date( 'Y-m-d H:i:s', $created );
+	$created = gmdate( 'Y-m-d H:i:s', $created );
 
 	if ( '' != $modified ) {
 		$modified = '-' . $modified;
@@ -179,7 +180,7 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 		$code .= adl_report_error( __( 'The modified parameter is invalid', 'simple-draft-list' ), $plugin_name, false );
 		$error = true;
 	}
-	$modified = date( 'Y-m-d H:i:s', $modified );
+	$modified = gmdate( 'Y-m-d H:i:s', $modified );
 
 	if ( ! $error ) {
 
@@ -196,13 +197,6 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 		}
 		if ( true === $pending || 'true' == $pending || 'yes' == $pending ) {
 			array_push( $status, 'pending' );
-		}
-
-		// Define icon folder.
-		if ( '' == $icon_folder ) {
-			$icon_folder = plugins_url( 'images/', dirname( __FILE__ ) );
-		} else {
-			$icon_folder = get_bloginfo( 'template_url' ) . '/' . $icon_folder . '/';
 		}
 
 		// Has a word or character count been requested?
@@ -316,10 +310,16 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 					// Replace the icon tag.
 					$alt_title = __( 'Scheduled', 'simple-draft-list' );
 					if ( 'future' == $post_status ) {
-						$icon_url = '<img src="' . $icon_folder . 'scheduled.png" alt="' . $alt_title . '" title="' . $alt_title . '">';
+						if ( '' != $icon_folder ) {
+							$icon_folder = get_bloginfo( 'template_url' ) . '/' . $icon_folder . '/';
+							$icon_url    = '<img src="' . $icon_folder . 'scheduled.png" alt="' . $alt_title . '" title="' . $alt_title . '">';
+						} else {
+							$icon_url = '<span class="dashicons dashicons-clock"></span>';
+						}
 					} else {
 						$icon_url = '';
 					}
+
 					$this_line = str_replace( '{{icon}}', $icon_url, $this_line );
 
 					// Replace the author tag.
@@ -344,11 +344,11 @@ function adl_generate_code( $list_limit = '', $list_type = '', $list_order = '',
 					$this_line = str_replace( '{{draft}}', $draft, $this_line );
 
 					// Replace the created date.
-					$created_date = date( $date_format, strtotime( $post_created ) );
+					$created_date = gmdate( $date_format, strtotime( $post_created ) );
 					$this_line    = str_replace( '{{created}}', $created_date, $this_line );
 
 					// Replace the modified date.
-					$modified_date = date( $date_format, strtotime( $post_modified ) );
+					$modified_date = gmdate( $date_format, strtotime( $post_modified ) );
 					$this_line     = str_replace( '{{modified}}', $modified_date, $this_line );
 
 					// Replace the word and character counts.

@@ -127,27 +127,27 @@ class DraftListWidget extends WP_Widget {
 		// Title field.
 		$field_id   = $this->get_field_id( 'title' );
 		$field_name = $this->get_field_name( 'title' );
-		echo "\r\n" . '<p><label for="' . esc_html( $field_id ) . '">' . esc_html__( 'Widget Title', 'simple-draft-list' ) . ': </label><input type="text" class="widefat" id="' . esc_html( $field_id ) . '" name="' . esc_html( $field_name ) . '" value="' . esc_html( $instance['title'] ) . '" /></p>';
+		echo "\r\n" . '<p><label for="' . esc_attr( $field_id ) . '">' . esc_html__( 'Widget Title', 'simple-draft-list' ) . ': </label><input type="text" class="widefat" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" value="' . esc_attr( $instance['title'] ) . '" /></p>';
 
 		// Template field.
 		$field_id   = $this->get_field_id( 'template' );
 		$field_name = $this->get_field_name( 'template' );
-		echo "\r\n" . '<p><label for="' . esc_html( $field_id ) . '">' . esc_html__( 'Template', 'simple-draft-list' ) . ': </label><input type="text" class="widefat" id="' . esc_html( $field_id ) . '" name="' . esc_html( $field_name ) . '" value="' . esc_html( $instance['template'] ) . '" /></p>';
+		echo "\r\n" . '<p><label for="' . esc_attr( $field_id ) . '">' . esc_html__( 'Template', 'simple-draft-list' ) . ': </label><input type="text" class="widefat" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" value="' . esc_attr( $instance['template'] ) . '" /></p>';
 
 		// Limit field.
 		$field_id   = $this->get_field_id( 'limit' );
 		$field_name = $this->get_field_name( 'limit' );
-		echo "\r\n" . '<p><label for="' . esc_html( $field_id ) . '">' . esc_html__( 'Maximum number of drafts (0=unlimited)', 'simple-draft-list' ) . ': </label><input type="text" size="2" maxlength="2" class="widefat" id="' . esc_html( $field_id ) . '" name="' . esc_html( $field_name ) . '" value="' . esc_html( $instance['limit'] ) . '" /></p>';
+		echo "\r\n" . '<p><label for="' . esc_attr( $field_id ) . '">' . esc_html__( 'Maximum number of drafts (0=unlimited)', 'simple-draft-list' ) . ': </label><input type="text" size="2" maxlength="2" class="widefat" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" value="' . esc_attr( $instance['limit'] ) . '" /></p>';
 
 		// Minimum number of words.
 		$field_id   = $this->get_field_id( 'words' );
 		$field_name = $this->get_field_name( 'words' );
-		echo "\r\n" . '<p><label for="' . esc_html( $field_id ) . '">' . esc_html__( 'Minimum number of words', 'simple-draft-list' ) . ': </label><input type="text" size="3" maxlength="3" class="widefat" id="' . esc_html( $field_id ) . '" name="' . esc_html( $field_name ) . '" value="' . esc_html( $instance['words'] ) . '" /></p>';
+		echo "\r\n" . '<p><label for="' . esc_attr( $field_id ) . '">' . esc_html__( 'Minimum number of words', 'simple-draft-list' ) . ': </label><input type="text" size="3" maxlength="3" class="widefat" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" value="' . esc_attr( $instance['words'] ) . '" /></p>';
 
 		// Draft types field.
 		$field_id   = $this->get_field_id( 'type' );
 		$field_name = $this->get_field_name( 'type' );
-		echo "\r\n" . '<p><label for="' . esc_html( $field_id ) . '">' . esc_html__( 'Draft Type', 'simple-draft-list' ) . ': </label><select name="' . esc_html( $field_name ) . '" class="widefat" id="' . esc_html( $field_id ) . '"><option value=""';
+		echo "\r\n" . '<p><label for="' . esc_attr( $field_id ) . '">' . esc_html__( 'Draft Type', 'simple-draft-list' ) . ': </label><select name="' . esc_attr( $field_name ) . '" class="widefat" id="' . esc_attr( $field_id ) . '"><option value=""';
 		if ( esc_html( $instance['type'] ) == '' ) {
 			echo " selected='selected'";
 		}
@@ -164,7 +164,7 @@ class DraftListWidget extends WP_Widget {
 		// Order field.
 		$field_id   = $this->get_field_id( 'order' );
 		$field_name = $this->get_field_name( 'order' );
-		echo "\r\n" . '<p><label for="' . esc_html( $field_id ) . '">' . esc_html__( 'Order', 'simple-draft-list' ) . ': </label><select name="' . esc_html( $field_name ) . '" class="widefat" id="' . esc_html( $field_id ) . '"><option value=""';
+		echo "\r\n" . '<p><label for="' . esc_attr( $field_id ) . '">' . esc_html__( 'Order', 'simple-draft-list' ) . ': </label><select name="' . esc_attr( $field_name ) . '" class="widefat" id="' . esc_attr( $field_id ) . '"><option value=""';
 		if ( esc_html( $instance['order'] ) == '' ) {
 			echo " selected='selected'";
 		}
@@ -193,7 +193,7 @@ class DraftListWidget extends WP_Widget {
 		// Scheduled field.
 		$field_id   = $this->get_field_id( 'scheduled' );
 		$field_name = $this->get_field_name( 'scheduled' );
-		echo "\r\n" . '<p><label for="' . esc_html( $field_id ) . '">' . esc_html__( 'Hide Scheduled Posts', 'simple-draft-list' ) . ': </label><input type="checkbox" name="' . esc_html( $field_name ) . '" id="' . esc_html( $field_id ) . '" value="no"';
+		echo "\r\n" . '<p><label for="' . esc_attr( $field_id ) . '">' . esc_html__( 'Hide Scheduled Posts', 'simple-draft-list' ) . ': </label><input type="checkbox" name="' . esc_attr( $field_name ) . '" id="' . esc_attr( $field_id ) . '" value="no"';
 		if ( 'no' == esc_html( $instance['scheduled'] ) ) {
 			echo " checked='checked'";
 		}
@@ -202,7 +202,7 @@ class DraftListWidget extends WP_Widget {
 		// Show pending posts.
 		$field_id   = $this->get_field_id( 'pending' );
 		$field_name = $this->get_field_name( 'pending' );
-		echo "\r\n" . '<p><label for="' . esc_html( $field_id ) . '">' . esc_html__( 'Show Pending Posts', 'simple-draft-list' ) . ': </label><input type="checkbox" name="' . esc_html( $field_name ) . '" id="' . esc_html( $field_id ) . '" value="yes"';
+		echo "\r\n" . '<p><label for="' . esc_attr( $field_id ) . '">' . esc_html__( 'Show Pending Posts', 'simple-draft-list' ) . ': </label><input type="checkbox" name="' . esc_attr( $field_name ) . '" id="' . esc_attr( $field_id ) . '" value="yes"';
 		if ( 'yes' == esc_attr( $instance['pending'] ) ) {
 			echo " checked='checked'";
 		}
@@ -211,22 +211,22 @@ class DraftListWidget extends WP_Widget {
 		// Folder field.
 		$field_id   = $this->get_field_id( 'folder' );
 		$field_name = $this->get_field_name( 'folder' );
-		echo "\r\n" . '<p><label for="' . esc_html( $field_id ) . '">' . esc_html__( 'Icon Folder', 'simple-draft-list' ) . ': </label><input type="text" class="widefat" id="' . esc_html( $field_id ) . '" name="' . esc_html( $field_name ) . '" value="' . esc_html( $instance['folder'] ) . '" /></p>';
+		echo "\r\n" . '<p><label for="' . esc_attr( $field_id ) . '">' . esc_html__( 'Icon Folder', 'simple-draft-list' ) . ': </label><input type="text" class="widefat" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" value="' . esc_attr( $instance['folder'] ) . '" /></p>';
 
 		// Date format field.
 		$field_id   = $this->get_field_id( 'date' );
 		$field_name = $this->get_field_name( 'date' );
-		echo "\r\n" . '<p><label for="' . esc_html( $field_id ) . '">' . esc_html__( 'Date Output Format', 'simple-draft-list' ) . ': </label><input type="text" class="widefat" id="' . esc_html( $field_id ) . '" name="' . esc_html( $field_name ) . '" value="' . esc_html( $instance['date'] ) . '" /></p>';
+		echo "\r\n" . '<p><label for="' . esc_attr( $field_id ) . '">' . esc_html__( 'Date Output Format', 'simple-draft-list' ) . ': </label><input type="text" class="widefat" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" value="' . esc_attr( $instance['date'] ) . '" /></p>';
 
 		// Created field.
 		$field_id   = $this->get_field_id( 'created' );
 		$field_name = $this->get_field_name( 'created' );
-		echo "\r\n" . '<p><label for="' . esc_html( $field_id ) . '">' . esc_html__( 'Must have been created in the last', 'simple-draft-list' ) . '*: </label><input type="text" class="widefat" id="' . esc_html( $field_id ) . '" name="' . esc_html( $field_name ) . '" value="' . esc_html( $instance['created'] ) . '" /></p>';
+		echo "\r\n" . '<p><label for="' . esc_attr( $field_id ) . '">' . esc_html__( 'Must have been created in the last', 'simple-draft-list' ) . '*: </label><input type="text" class="widefat" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" value="' . esc_attr( $instance['created'] ) . '" /></p>';
 
 		// Modified field.
 		$field_id   = $this->get_field_id( 'modified' );
 		$field_name = $this->get_field_name( 'modified' );
-		echo "\r\n" . '<p><label for="' . esc_html( $field_id ) . '">' . esc_html__( 'Must have been modified in the last', 'simple-draft-list' ) . '*: </label><input type="text" class="widefat" id="' . esc_html( $field_id ) . '" name="' . esc_html( $field_name ) . '" value="' . esc_html( $instance['modified'] ) . '" /></p>';
+		echo "\r\n" . '<p><label for="' . esc_attr( $field_id ) . '">' . esc_html__( 'Must have been modified in the last', 'simple-draft-list' ) . '*: </label><input type="text" class="widefat" id="' . esc_attr( $field_id ) . '" name="' . esc_attr( $field_name ) . '" value="' . esc_attr( $instance['modified'] ) . '" /></p>';
 
 		echo '<p>* ' . esc_html__( 'leave blank to show posts across all time periods', 'simple-draft-list' ) . '</p>';
 	}

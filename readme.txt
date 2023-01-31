@@ -5,7 +5,7 @@ Tags: draft, list, scheduled, SEO, widget
 Requires at least: 4.6
 Tested up to: 6.1
 Requires PHP: 7.4
-Stable tag: 2.5.1
+Stable tag: 2.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 
-**If you're upgrading from a previous release of Draft List (i.e. pre version 2.5) please check out the FAQ - a number of changes have been made in this release that you need to be aware of. Also, there's big news for version 3.**
+**If you're upgrading from a previous release of Draft List (i.e. pre version 2.5) please check out the FAQ - a number of changes have been made in this release that you need to be aware of**
 
 Draft List allows you to both manage your draft and scheduled posts more easily but also to promote them by showing them on your site via shortcode or widget - use it to show your visitors what's "coming soon" or as a great SEO tool.
 
@@ -114,16 +114,6 @@ From version 2.5, 2 features have been removed...
 1. Caching has gone. This release has had some massive performance improvements which means it was no longer needed. It, more often than not, caused issues and many people have native caching on their site anyway.
 2. The draft menus options have been removed. I've moved that functionality off to another plugin named [Draft Links](https://wordpress.org/plugins/draft-links/). If you want the menu links back, please install that. Why have they been removed? For a start, some people were installing this plugin JUST for that functionality, so it made sense for me to separate it. Additionally, the next FAQ answer is part of this too...
 
-= What do I need to know about version 3? =
-
-Version 3 of this plugin is coming soon and it will be a breaking release. In other words, your existing shortcode will stop working, if you're upgrading from an earlier version - you'll need to make changes to it for it to work again.
-
-When this plugin first started it was all about drafts. However, that's changed as it's become obvious that what this plugin should be about is any unpublished content - not just drafts. It could be pending or scheduled posts, for example. Basically, it should be so much more. So, version 3 will be.
-
-It will be renamed and the draft element de-emphasised. This will include renaming the shortcode and various parameters too (hence the breaking element of it). If you have automatic updates switched on for this plugin, I'd recommend turning them off.
-
-The good news, however, is that the plugin will include a raft of new and powerful features, including the ability to limit unpublished post output to specific categories, amongst other things.
-
 == Screenshots ==
 
 1. An example output of draft posts
@@ -131,6 +121,11 @@ The good news, however, is that the plugin will include a raft of new and powerf
 == Changelog ==
 
 I use semantic versioning, with the first release being 1.0.
+
+= 2.5.2 =
+* Bug: I wasn't setting an initial value for $code. My bad. Now resolved. Thanks to Wiktor Jędrzejczak for spotting that.
+* Enhancement: I've made a number of changes to ensure the plugin abides by PHPCS standards for both WordPress and WordPress VIP. Secure and Performant are my middle names. They're not really. I don't actually have so, theoretically, I could use these.
+* Enhancement: For the default clock icon, I'm now using a built-in Dashicon SVG. However, you can override for your own image in the usual way.
 
 = 2.5.1 =
 * Bug: Fixed a bug (an extra comma) that impacts users on a particular version of PHP
@@ -261,5 +256,5 @@ I use semantic versioning, with the first release being 1.0.
 
 == Upgrade Notice ==
 
-= 2.5.1 =
-* Bug fix that impacts users on one particular version of PHP
+= 2.5.2 =
+* A bug fix, some code quality improvements and a switch to an SVG for the default clock icon.
