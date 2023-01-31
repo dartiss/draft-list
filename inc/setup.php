@@ -33,3 +33,14 @@ function adl_set_plugin_meta( $links, $file ) {
 }
 
 add_filter( 'plugin_row_meta', 'adl_set_plugin_meta', 10, 2 );
+
+/**
+ * Add Dashicons to front-end
+ *
+ * Will enqueue Dashicons for front-end use.
+ */
+function adl_load_dashicons_front_end() {
+	wp_enqueue_style( 'dashicons' );
+}
+
+add_action( 'wp_enqueue_scripts', 'adl_load_dashicons_front_end' );
