@@ -3,7 +3,7 @@ Contributors: dartiss
 Donate link: https://artiss.blog/donate
 Tags: draft, list, scheduled, SEO, widget
 Requires at least: 4.6
-Tested up to: 6.1
+Tested up to: 6.3
 Requires PHP: 7.4
 Stable tag: 2.5.2
 License: GPLv2 or later
