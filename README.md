@@ -1,6 +1,6 @@
 # Draft List
 
-<img src="https://ps.w.org/simple-draft-list/assets/icon-128x128.png" align="left">Draft List allows you to promote your unpublished posts by showing them on your site via a shortcode or widget - use it to show your visitors what's "coming soon" or as a great SEO tool.
+<img src="https://ps.w.org/simple-draft-list/assets/icon.svg" width=128px align="left" style="padding: 0 20px 20px 0;">Draft List allows you to promote your unpublished posts by showing them on your site via a shortcode or widget - use it to show your visitors what's "coming soon" or as a great SEO tool.
 
 How easy is it display a list of unpublished posts? Here's an example of how you could use it in a post or page...
 
