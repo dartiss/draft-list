@@ -2,16 +2,16 @@
 /**
  * Draft List
  *
- * @package           Artiss-Draft-List
+ * @package           simple-draft-list
  * @author            David Artiss
  * @license           GPL-2.0-or-later
  *
  * Plugin Name:       Draft List
  * Plugin URI:        https://wordpress.org/plugins/simple-draft-list/
- * Description:       📝 WordPress plugin to manage and promote your unpublished content.
- * Version:           2.5.2
+ * Description:       //WordPress plugin to manage and promote your unpublished content.
+ * Version:           2.6
  * Requires at least: 4.6
- * Requires PHP:      5.3
+ * Requires PHP:      7.4
  * Author:            David Artiss
  * Author URI:        https://artiss.blog
  * Text Domain:       simple-draft-list
@@ -26,12 +26,26 @@
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+// Exit if accessed directly.
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+// Define global to hold the plugin base file name.
+
+if ( ! defined( 'DRAFT_LIST_PLUGIN_BASE' ) ) {
+	define( 'DRAFT_LIST_PLUGIN_BASE', plugin_basename( __FILE__ ) );
+}
+
 // Require the various code components - all held within the inc folder.
 
-require_once plugin_dir_path( __FILE__ ) . 'inc/setup.php';                 // Administration config.
+require_once plugin_dir_path( __FILE__ ) . 'inc/shared.php';
 
-require_once plugin_dir_path( __FILE__ ) . 'inc/metabox.php';               // Add meta box to editor.
+require_once plugin_dir_path( __FILE__ ) . 'inc/metabox.php';
 
-require_once plugin_dir_path( __FILE__ ) . 'inc/class-draftlistwidget.php'; // Set-up widget.
+require_once plugin_dir_path( __FILE__ ) . 'inc/class-draftlistwidget.php';
 
-require_once plugin_dir_path( __FILE__ ) . 'inc/create-lists.php';          // Code to output draft list.
+require_once plugin_dir_path( __FILE__ ) . 'inc/widget.php';
+
+require_once plugin_dir_path( __FILE__ ) . 'inc/create-lists.php';

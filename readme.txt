@@ -3,13 +3,14 @@ Contributors: dartiss
 Donate link: https://artiss.blog/donate
 Tags: draft, list, scheduled, SEO, widget
 Requires at least: 4.6
-Tested up to: 6.3
+Tested up to: 6.5
 Requires PHP: 7.4
-Stable tag: 2.5.2
+Stable tag: 2.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+README revision: 1.0
 
-📝 WordPress plugin to manage and promote your unpublished content.
+WordPress plugin to manage and promote your unpublished content.
 
 == Description ==
 
@@ -29,10 +30,12 @@ Key features include...
 * Output is highly configurable - create your own look by using a template, identify scheduled posts with an icon, sequence the results in various ways and even narrow down the results to a specific timeframe
 * Click on any of the drafts posts listed to edit them
 * A meta box in the editor screen allows you to omit individual posts from any list outputs
+* Tested up to PHP 8.2
+* Fully complies with WordPress coding standards
+* Compliant with the stronger [WordPress VIP](https://wpvip.com/) coding standards, as well as compatibility with their platform
+* Community plugin - visit the [Github page](https://github.com/dartiss/draft-list "Github") to get involved with the latest code development, request enhancements and report issues
 
-Iconography is courtesy of the very talented [Janki Rathod](https://www.fiverr.com/jankirathore) ♥️
-
-👉 Please visit the [Github page](https://github.com/dartiss/draft-list "Github") for the latest code development, planned enhancements and known issues 👈
+Iconography is courtesy of the very talented [Janki Rathod](https://www.fiverr.com/jankirathore).
 
 == Shortcode Parameters ==
 
@@ -54,7 +57,7 @@ To restrict the posts to a particular timeframe you can use the following 2 para
 * **created=** : his reflects how long ago the post/page must have been created for it to be listed. For example `6 months` would only list drafts that were created in the last 6 months.
 * **modified=** : This reflects how long ago the post/page must have been modified last for it to be listed. For example `6 months` would only list drafts that have been modified in the last 6 months.
 
-== 🧩 Templates ==
+== Templates ==
 
 The template parameter allows you to format the output by allowing you to specify how each line of output will display. A number of tags can be added, and you can mix these with HTML. The available tags are as follows...
 
@@ -74,7 +77,7 @@ The template parameter allows you to format the output by allowing you to specif
 
 If {{ul}} or {{ol}} are specified then all the appropriate list tags will be added to the output. If neither are used then it's assumed that line output will be controlled by yourself.
 
-== ⛔️ Omitting Posts/Pages from Results ==
+== Omitting Posts/Pages from Results ==
 
 If you wish to omit a page or post from the list then you can do this in 3 ways...
 
@@ -82,7 +85,7 @@ If you wish to omit a page or post from the list then you can do this in 3 ways.
 2. The post and page editor has a meta box, where you can select to hide the page/post.
 3. You can add a custom field to a page/post with a name of 'draft_hide' and a value of 'Yes'
 
-== ✏️ Edit Link ==
+== Edit Link ==
 
 If the current user can edit the draft item being listed then it will be linked to the appropriate edit page. The user then simply needs to click on the draft item to edit it.
 
@@ -98,12 +101,10 @@ Save the result and that's it! You can use unlimited widgets, so you can add dif
 
 == Installation ==
 
-Draft List can be found and installed via the Plugin menu within WordPress administration (Plugins -> Add New). Alternatively, it can be downloaded from WordPress.org and installed manually...
+This plugin can be found and installed via the Plugin menu within WP Admin (Plugins -> Add New). Alternatively, it can be downloaded from WordPress.org and installed manually...
 
-1. Upload the entire `simple-draft-list` folder to your `wp-content/plugins/` directory.
-2. Activate the plugin through the 'Plugins' menu in WordPress administration.
-
-Voila! It's ready to go.
+1. Upload the entire unzipped plugin folder to your `wp-content/plugins/` directory, either from WP Admin (Plugins -> Add New), your favorite FTP client or any other file manager
+2. Activate the plugin through the 'Plugins' menu in WP Admin (Plugins -> Installed Plugins)
 
 == Frequently Asked Questions ==
 
@@ -121,6 +122,9 @@ From version 2.5, 2 features have been removed...
 == Changelog ==
 
 I use semantic versioning, with the first release being 1.0.
+
+= 2.6 =
+* Enhancements: Numerous code quality improvements. So many, this is a major release bump as so much of the code has changed. No new features, though
 
 = 2.5.2 =
 * Bug: I wasn't setting an initial value for $code. My bad. Now resolved. Thanks to Wiktor Jędrzejczak for spotting that.
@@ -256,5 +260,5 @@ I use semantic versioning, with the first release being 1.0.
 
 == Upgrade Notice ==
 
-= 2.5.2 =
-* A bug fix, some code quality improvements and a switch to an SVG for the default clock icon.
+= 2.6 =
+* Code quality improvements

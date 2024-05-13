@@ -4,8 +4,14 @@
  *
  * Create and display widgets
  *
- * @package Artiss-Draft-List
+ * @package simple-draft-list
  */
+
+// Exit if accessed directly.
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Add meta to plugin details
@@ -26,7 +32,7 @@ class DraftListWidget extends WP_Widget {
 		parent::__construct(
 			'draft_list_widget',
 			__( 'Draft List', 'simple-draft-list' ),
-			array( 
+			array(
 				'description'                 => __( 'WordPress plugin to manage and promote your unpublished content.', 'simple-draft-list' ),
 				'class'                       => 'dl-widget',
 				'customize_selective_refresh' => true,
@@ -39,17 +45,35 @@ class DraftListWidget extends WP_Widget {
 	 *
 	 * Display the widget
 	 *
-	 * @uses  adl_generate_code  Generate the required code
+	 * @uses  draft_list_generate_code  Generate the required code
 	 *
 	 * @param string $args       Arguments.
 	 * @param string $instance   Instance.
 	 */
 	public function widget( $args, $instance ) {
 
-		extract( $args, EXTR_SKIP );
+		// Extract out any arguments.
+
+		$before_title  = '';
+		$after_title   = '';
+		$before_widget = '';
+		$after_widget  = '';
+
+		if ( array_key_exists( 'before_title', $args ) ) {
+			$before_title = $args['before_title'];
+		}
+		if ( array_key_exists( 'after_title', $args ) ) {
+			$after_title = $args['after_title'];
+		}
+		if ( array_key_exists( 'before_widget', $args ) ) {
+			$before_widget = $args['before_widget'];
+		}
+		if ( array_key_exists( 'after_widget', $args ) ) {
+			$after_widget = $args['widget'];
+		}
 
 		// Merge in default values.
-		$instance = wp_parse_args( (array) $instance, adl_load_widget_defaults() );
+		$instance = wp_parse_args( (array) $instance, draft_list_load_widget_defaults() );
 
 		// Output the header.
 		echo wp_kses( $before_widget, 'post' );
@@ -64,7 +88,7 @@ class DraftListWidget extends WP_Widget {
 
 		// Generate the video and output it.
 		echo wp_kses(
-			adl_generate_code(
+			draft_list_generate_code(
 				$instance['limit'],
 				$instance['type'],
 				$instance['order'],
@@ -122,7 +146,7 @@ class DraftListWidget extends WP_Widget {
 	public function form( $instance ) {
 
 		// Merge in default values.
-		$instance = wp_parse_args( (array) $instance, adl_load_widget_defaults() );
+		$instance = wp_parse_args( (array) $instance, draft_list_load_widget_defaults() );
 
 		// Title field.
 		$field_id   = $this->get_field_id( 'title' );
@@ -148,15 +172,15 @@ class DraftListWidget extends WP_Widget {
 		$field_id   = $this->get_field_id( 'type' );
 		$field_name = $this->get_field_name( 'type' );
 		echo "\r\n" . '<p><label for="' . esc_attr( $field_id ) . '">' . esc_html__( 'Draft Type', 'simple-draft-list' ) . ': </label><select name="' . esc_attr( $field_name ) . '" class="widefat" id="' . esc_attr( $field_id ) . '"><option value=""';
-		if ( esc_html( $instance['type'] ) == '' ) {
+		if ( esc_html( $instance['type'] ) === '' ) {
 			echo " selected='selected'";
 		}
 		echo '>' . esc_html__( 'Posts & Pages', 'simple-draft-list' ) . '</option><option value="page"';
-		if ( esc_html( $instance['type'] ) == 'page' ) {
+		if ( esc_html( $instance['type'] ) === 'page' ) {
 			echo " selected='selected'";
 		}
 		echo '>' . esc_html__( 'Pages', 'simple-draft-list' ) . '</option><option value="post"';
-		if ( esc_html( $instance['type'] ) == 'post' ) {
+		if ( esc_html( $instance['type'] ) === 'post' ) {
 			echo " selected='selected'";
 		}
 		echo '>' . esc_html__( 'Posts', 'simple-draft-list' ) . '</option></select></p>';
@@ -165,27 +189,27 @@ class DraftListWidget extends WP_Widget {
 		$field_id   = $this->get_field_id( 'order' );
 		$field_name = $this->get_field_name( 'order' );
 		echo "\r\n" . '<p><label for="' . esc_attr( $field_id ) . '">' . esc_html__( 'Order', 'simple-draft-list' ) . ': </label><select name="' . esc_attr( $field_name ) . '" class="widefat" id="' . esc_attr( $field_id ) . '"><option value=""';
-		if ( esc_html( $instance['order'] ) == '' ) {
+		if ( esc_html( $instance['order'] ) === '' ) {
 			echo " selected='selected'";
 		}
 		echo '>' . esc_html__( 'Descending Modified Date', 'simple-draft-list' ) . '</option><option value="ma"';
-		if ( esc_html( $instance['order'] ) == 'ma' ) {
+		if ( esc_html( $instance['order'] ) === 'ma' ) {
 			echo " selected='selected'";
 		}
 		echo '>' . esc_html__( 'Ascending Modified Date', 'simple-draft-list' ) . '</option><option value="cd"';
-		if ( esc_html( $instance['order'] ) == 'cd' ) {
+		if ( esc_html( $instance['order'] ) === 'cd' ) {
 			echo " selected='selected'";
 		}
 		echo '>' . esc_html__( 'Descending Created Date', 'simple-draft-list' ) . '</option><option value="ca"';
-		if ( esc_html( $instance['order'] ) == 'ca' ) {
+		if ( esc_html( $instance['order'] ) === 'ca' ) {
 			echo " selected='selected'";
 		}
 		echo '>' . esc_html__( 'Ascending Created Date', 'simple-draft-list' ) . '</option><option value="td"';
-		if ( esc_html( $instance['order'] ) == 'td' ) {
+		if ( esc_html( $instance['order'] ) === 'td' ) {
 			echo " selected='selected'";
 		}
 		echo '>' . esc_html__( 'Descending Title', 'simple-draft-list' ) . '</option><option value="ta"';
-		if ( esc_html( $instance['order'] ) == 'ta' ) {
+		if ( esc_html( $instance['order'] ) === 'ta' ) {
 			echo " selected='selected'";
 		}
 		echo '>' . esc_html__( 'Ascending Title', 'simple-draft-list' ) . '</option></select></p>';
@@ -194,7 +218,7 @@ class DraftListWidget extends WP_Widget {
 		$field_id   = $this->get_field_id( 'scheduled' );
 		$field_name = $this->get_field_name( 'scheduled' );
 		echo "\r\n" . '<p><label for="' . esc_attr( $field_id ) . '">' . esc_html__( 'Hide Scheduled Posts', 'simple-draft-list' ) . ': </label><input type="checkbox" name="' . esc_attr( $field_name ) . '" id="' . esc_attr( $field_id ) . '" value="no"';
-		if ( 'no' == esc_html( $instance['scheduled'] ) ) {
+		if ( 'no' === esc_html( $instance['scheduled'] ) ) {
 			echo " checked='checked'";
 		}
 		echo '/></p>';
@@ -203,7 +227,7 @@ class DraftListWidget extends WP_Widget {
 		$field_id   = $this->get_field_id( 'pending' );
 		$field_name = $this->get_field_name( 'pending' );
 		echo "\r\n" . '<p><label for="' . esc_attr( $field_id ) . '">' . esc_html__( 'Show Pending Posts', 'simple-draft-list' ) . ': </label><input type="checkbox" name="' . esc_attr( $field_name ) . '" id="' . esc_attr( $field_id ) . '" value="yes"';
-		if ( 'yes' == esc_attr( $instance['pending'] ) ) {
+		if ( 'yes' === esc_attr( $instance['pending'] ) ) {
 			echo " checked='checked'";
 		}
 		echo '/></p>';
@@ -230,36 +254,4 @@ class DraftListWidget extends WP_Widget {
 
 		echo '<p>* ' . esc_html__( 'leave blank to show posts across all time periods', 'simple-draft-list' ) . '</p>';
 	}
-}
-
-/**
- * Register Widget
- *
- * Register widget when loading the WP core
- */
-function adl_register_widgets() {
-	register_widget( 'DraftListWidget' );
-}
-
-add_action( 'widgets_init', 'adl_register_widgets' );
-
-/**
- * Widget defaults
- *
- * Return default values for the widget
- */
-function adl_load_widget_defaults() {
-	return array(
-		'title'     => __( 'Coming Soon', 'simple-draft-list' ),
-		'limit'     => '0',
-		'type'      => '',
-		'order'     => '',
-		'scheduled' => 'yes',
-		'pending'   => 'no',
-		'folder'    => '',
-		'date'      => 'F j, Y, g:i a',
-		'created'   => '',
-		'modified'  => '',
-		'template'  => '{{ol}}{{draft}} {{icon}}',
-	);
 }
