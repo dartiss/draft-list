@@ -8,8 +8,8 @@
  *
  * Plugin Name:       Draft List
  * Plugin URI:        https://wordpress.org/plugins/simple-draft-list/
- * Description:       //WordPress plugin to manage and promote your unpublished content.
- * Version:           2.6
+ * Description:       Promote your unpublished content.
+ * Version:           2.6.1
  * Requires at least: 4.6
  * Requires PHP:      7.4
  * Author:            David Artiss
