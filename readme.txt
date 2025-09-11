@@ -3,9 +3,9 @@ Contributors: dartiss
 Donate link: https://artiss.blog/donate
 Tags: draft, list, scheduled, SEO, widget
 Requires at least: 4.6
-Tested up to: 6.5
+Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.6
+Stable tag: 2.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 README revision: 1.0
@@ -20,7 +20,7 @@ Draft List allows you to both manage your draft and scheduled posts more easily 
 
 How easy is it display a list of draft posts? Here's an example of how you could use it in a post or page...
 
-`[drafts limit=5 type=post order=ma scheduled=no template='{{ul}}{{[draft}} {{icon}}']`
+`[drafts limit=5 type=post order=ma scheduled=no template='{{ul}}{{draft}} {{icon}}']`
 
 This would display a list of up to 5 draft posts in ascending modified date sequence, with an icon displayed to the right of each if the draft is scheduled.
 
@@ -115,6 +115,10 @@ From version 2.5, 2 features have been removed...
 1. Caching has gone. This release has had some massive performance improvements which means it was no longer needed. It, more often than not, caused issues and many people have native caching on their site anyway.
 2. The draft menus options have been removed. I've moved that functionality off to another plugin named [Draft Links](https://wordpress.org/plugins/draft-links/). If you want the menu links back, please install that. Why have they been removed? For a start, some people were installing this plugin JUST for that functionality, so it made sense for me to separate it. Additionally, the next FAQ answer is part of this too...
 
+= Do you support this plugin on forks of WordPress? =
+
+No. It was developed for WordPress and so forks remain unsupported. I have no intention of developing and testing this on any other version.
+
 == Screenshots ==
 
 1. An example output of draft posts
@@ -122,6 +126,9 @@ From version 2.5, 2 features have been removed...
 == Changelog ==
 
 I use semantic versioning, with the first release being 1.0.
+
+= 2.6.1 =
+* Enhancement: Fixed a reported vulnerability ([CVE-2025-10181](https://www.cve.org/CVERecord?id=CVE-2025-10181)), reported to me by [WordFence](https://www.wordfence.com). Until this fix, it was possible for an editor, using the plugin's shortcode, to inject web scripts via a link.
 
 = 2.6 =
 * Enhancements: Numerous code quality improvements. So many, this is a major release bump as so much of the code has changed. No new features, though
@@ -260,5 +267,5 @@ I use semantic versioning, with the first release being 1.0.
 
 == Upgrade Notice ==
 
-= 2.6 =
-* Code quality improvements
+= 2.6.1 =
+* Fixed a reported code vulnerability

@@ -122,12 +122,15 @@ function draft_list_generate_code( $list_limit = '', $list_type = '', $list_orde
 	$plugin_name = 'Draft List';
 	$code        = '';
 
+	// Get a list of HTML that's allowed within the HTML.
+	$allowed_list = draft_list_allowed_html();
+
 	// Convert appropriate parameters.
 	$list_type  = strtolower( $list_type );
 	$list_order = strtolower( $list_order );
 	$scheduled  = strtolower( $scheduled );
 	$pending    = strtolower( $pending );
-	$template   = html_entity_decode( $template );
+	$template   = wp_kses( html_entity_decode( $template ), $allowed_list );
 
 	// Set default values.
 	if ( '' === $list_limit ) {
@@ -491,4 +494,86 @@ function draft_list_report_error( $error, $plugin_name, $output = true ) {
 	} else {
 		return $text;
 	}
+}
+
+/**
+ * Allowed HTML List
+ *
+ * Generate an allowed HTML list ready to feed intp wp_kses
+ *
+ * @return array
+ */
+function draft_list_allowed_html() {
+
+	$allowed_list = array(
+		'a'          => array(
+			'class' => array(),
+			'href'  => array(),
+			'rel'   => array(),
+			'title' => array(),
+		),
+		'abbr'       => array(
+			'title' => array(),
+		),
+		'b'          => array(),
+		'blockquote' => array(
+			'cite' => array(),
+		),
+		'cite'       => array(
+			'title' => array(),
+		),
+		'code'       => array(),
+		'del'        => array(
+			'datetime' => array(),
+			'title'    => array(),
+		),
+		'dd'         => array(),
+		'div'        => array(
+			'class' => array(),
+			'title' => array(),
+			'style' => array(),
+		),
+		'dl'         => array(),
+		'dt'         => array(),
+		'em'         => array(),
+		'h1'         => array(),
+		'h2'         => array(),
+		'h3'         => array(),
+		'h4'         => array(),
+		'h5'         => array(),
+		'h6'         => array(),
+		'i'          => array(),
+		'img'        => array(
+			'alt'    => array(),
+			'class'  => array(),
+			'height' => array(),
+			'src'    => array(),
+			'width'  => array(),
+		),
+		'li'         => array(
+			'class' => array(),
+		),
+		'ol'         => array(
+			'class' => array(),
+		),
+		'p'          => array(
+			'class' => array(),
+		),
+		'q'          => array(
+			'cite'  => array(),
+			'title' => array(),
+		),
+		'span'       => array(
+			'class' => array(),
+			'title' => array(),
+			'style' => array(),
+		),
+		'strike'     => array(),
+		'strong'     => array(),
+		'ul'         => array(
+			'class' => array(),
+		),
+	);
+
+	return $allowed_list;
 }
