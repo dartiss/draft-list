@@ -5,7 +5,7 @@ Tags: draft, list, scheduled, SEO, widget
 Requires at least: 4.6
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.6.1
+Stable tag: 2.6.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 README revision: 1.0
@@ -126,6 +126,11 @@ No. It was developed for WordPress and so forks remain unsupported. I have no in
 == Changelog ==
 
 I use semantic versioning, with the first release being 1.0.
+
+= 2.6.2 =
+* Enhancement: Fixed another reported vulnerability ([CVE-2025-11197](https://www.cve.org/CVERecord?id=CVE-2025-11197)), reported to me by [WordFence](https://www.wordfence.com). This time it's with the icon folder parameter
+* Enhancement: Added some further sanitization to improved the security further
+* Bug: Fixed a bug with the word count output
 
 = 2.6.1 =
 * Enhancement: Fixed a reported vulnerability ([CVE-2025-10181](https://www.cve.org/CVERecord?id=CVE-2025-10181)), reported to me by [WordFence](https://www.wordfence.com). Until this fix, it was possible for an editor, using the plugin's shortcode, to inject web scripts via a link.
@@ -267,5 +272,5 @@ I use semantic versioning, with the first release being 1.0.
 
 == Upgrade Notice ==
 
-= 2.6.1 =
-* Fixed a reported code vulnerability
+= 2.6.2 =
+* Fixed a number of security vulnerabilities as well as a logic bug
