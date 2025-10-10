@@ -122,6 +122,9 @@ function draft_list_generate_code( $list_limit = '', $list_type = '', $list_orde
 	$plugin_name = 'Draft List';
 	$code        = '';
 
+	// Sanitize the folder name.
+	$icon_folder = preg_replace( '/[^a-zA-Z0-9_-]/', '', $icon_folder );
+
 	// Get a list of HTML that's allowed within the HTML.
 	$allowed_list = draft_list_allowed_html();
 
@@ -360,8 +363,8 @@ function draft_list_generate_code( $list_limit = '', $list_type = '', $list_orde
 					$alt_title = __( 'Scheduled', 'simple-draft-list' );
 					if ( 'future' === $post_status ) {
 						if ( '' !== $icon_folder ) {
-							$icon_folder = get_bloginfo( 'template_url' ) . '/' . $icon_folder . '/';
-							$icon_url    = '<img src="' . $icon_folder . 'scheduled.png" alt="' . $alt_title . '" title="' . $alt_title . '">';
+							$icon_file = sanitize_file_name( get_bloginfo( 'template_url' ) . '/' . $icon_folder . '/scheduled.png' );
+							$icon_url  = '<img src="' . $icon_file . '" alt="' . $alt_title . '" title="' . $alt_title . '">';
 						} else {
 							$icon_url = '<span class="dashicons dashicons-clock"></span>';
 						}
@@ -372,10 +375,10 @@ function draft_list_generate_code( $list_limit = '', $list_type = '', $list_orde
 					$this_line = str_replace( '{{icon}}', $icon_url, $this_line );
 
 					// Replace the author tag.
-					$this_line = str_replace( '{{author}}', $author, $this_line );
+					$this_line = str_replace( '{{author}}', esc_html( $author ), $this_line );
 
 					if ( '' !== $author_url ) {
-						$author_link = '<a href="' . $author_url . '">' . $author . '</a>';
+						$author_link = '<a href="' . esc_url( $author_url ) . '">' . esc_html( $author ) . '</a>';
 					} else {
 						$author_link = $author;
 					}
@@ -388,7 +391,7 @@ function draft_list_generate_code( $list_limit = '', $list_type = '', $list_orde
 						$draft = __( '(no title)', 'simple-draft-list' );
 					}
 					if ( $can_edit ) {
-						$draft = '<a href="' . home_url() . '/wp-admin/post.php?post=' . $post_id . '&action=edit" rel="nofollow">' . $draft . '</a>';
+						$draft = '<a href="' . home_url() . '/wp-admin/post.php?post=' . $post_id . '&action=edit" rel="nofollow">' . esc_html( $draft ) . '</a>';
 					}
 					$this_line = str_replace( '{{draft}}', $draft, $this_line );
 
@@ -403,7 +406,7 @@ function draft_list_generate_code( $list_limit = '', $list_type = '', $list_orde
 					// Replace the word and character counts.
 					if ( $count ) {
 						if ( strpos( $this_line, '{{words}}' ) !== false ) {
-							$this_line = str_replace( '{{words}}', number_format( $word_count ), $this_line );
+							$this_line = str_replace( '{{words}}', number_format( $post_length ), $this_line );
 						}
 						if ( strpos( $this_line, '{{chars}}' ) !== false ) {
 							$this_line = str_replace( '{{chars}}', number_format( strlen( $post_content ) - substr_count( $post_content, ' ' ) ), $this_line );
@@ -419,7 +422,7 @@ function draft_list_generate_code( $list_limit = '', $list_type = '', $list_orde
 					if ( 'Uncategorized' === $category ) {
 						$category = '';
 					}
-					$this_line = str_replace( '{{category}}', $category, $this_line );
+					$this_line = str_replace( '{{category}}', esc_html( $category ), $this_line );
 
 					// Replace the categories.
 					$category_list = '';
@@ -432,7 +435,7 @@ function draft_list_generate_code( $list_limit = '', $list_type = '', $list_orde
 						$category_list = substr( $category_list, 2 );
 					}
 
-					$this_line = str_replace( '{{categories}}', $category_list, $this_line );
+					$this_line = str_replace( '{{categories}}', esc_html( $category_list ), $this_line );
 
 					// Now add the current line to the overall code output.
 					$code .= $this_line . "\n";

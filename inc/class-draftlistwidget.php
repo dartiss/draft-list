@@ -119,19 +119,32 @@ class DraftListWidget extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 
-		$instance              = $old_instance;
-		$instance['title']     = $new_instance['title'];
-		$instance['limit']     = $new_instance['limit'];
-		$instance['type']      = $new_instance['type'];
-		$instance['order']     = $new_instance['order'];
-		$instance['scheduled'] = $new_instance['scheduled'];
-		$instance['folder']    = $new_instance['folder'];
-		$instance['date']      = $new_instance['date'];
-		$instance['created']   = $new_instance['created'];
-		$instance['modified']  = $new_instance['modified'];
-		$instance['template']  = $new_instance['template'];
-		$instance['words']     = $new_instance['words'];
-		$instance['pending']   = $new_instance['pending'];
+		$instance = $old_instance;
+
+		// Sanitize fields that accept plain text.
+		$instance['title']    = sanitize_text_field( $new_instance['title'] );
+		$instance['folder']   = sanitize_text_field( $new_instance['folder'] );
+		$instance['date']     = sanitize_text_field( $new_instance['date'] );
+		$instance['created']  = sanitize_text_field( $new_instance['created'] );
+		$instance['modified'] = sanitize_text_field( $new_instance['modified'] );
+
+		// Sanitize fields that should be non-negative numbers.
+		$instance['limit'] = absint( $new_instance['limit'] );
+		$instance['words'] = absint( $new_instance['words'] );
+
+		// Sanitize fields that are programmatic keys (e.g., from a dropdown).
+		$instance['type']  = sanitize_key( $new_instance['type'] );
+		$instance['order'] = sanitize_key( $new_instance['order'] );
+
+		// Sanitize the template field, allowing for safe HTML.
+		$instance['template'] = wp_kses_post( $new_instance['template'] );
+
+		// Handle checkbox logic. A submitted checkbox will be set, an unchecked one will not.
+		// 'Hide Scheduled Posts' checkbox: checked = 'no', unchecked = 'yes'.
+		$instance['scheduled'] = isset( $new_instance['scheduled'] ) ? 'no' : 'yes';
+
+		// 'Show Pending Posts' checkbox: checked = 'yes', unchecked = 'no'.
+		$instance['pending'] = isset( $new_instance['pending'] ) ? 'yes' : 'no';
 
 		return $instance;
 	}
