@@ -380,7 +380,7 @@ function draft_list_generate_code( $list_limit = '', $list_type = '', $list_orde
 					if ( '' !== $author_url ) {
 						$author_link = '<a href="' . esc_url( $author_url ) . '">' . esc_html( $author ) . '</a>';
 					} else {
-						$author_link = $author;
+						$author_link = esc_html( $author );
 					}
 					$this_line = str_replace( '{{author+link}}', $author_link, $this_line );
 
