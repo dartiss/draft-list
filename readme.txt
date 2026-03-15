@@ -3,9 +3,9 @@ Contributors: dartiss
 Donate link: https://artiss.blog/donate
 Tags: draft, list, scheduled, SEO, widget
 Requires at least: 4.6
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 2.6.2
+Stable tag: 2.6.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 README revision: 1.0
@@ -119,6 +119,10 @@ From version 2.5, 2 features have been removed...
 
 No. It was developed for WordPress and so forks remain unsupported. I have no intention of developing and testing this on any other version.
 
+= Where do I report security bugs found in this plugin? =
+
+Please report security bugs found in the source code of the undefined plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/061b870b-ac72-411c-bd25-89855b985ee1). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+
 == Screenshots ==
 
 1. An example output of draft posts
@@ -127,13 +131,17 @@ No. It was developed for WordPress and so forks remain unsupported. I have no in
 
 I use semantic versioning, with the first release being 1.0.
 
+= 2.6.3 =
+
+* Enhancement: Fixed a reported vulnerability ([CVE-2026-4006](https://www.cve.org/CVERecord?id=CVE-2026-4006)), reported to me by [WordFence](https://www.wordfence.com/r/26c227ba3ee33458/). This fixes a Stored Cross-Site Scripting vulnerability
+
 = 2.6.2 =
-* Enhancement: Fixed another reported vulnerability ([CVE-2025-11197](https://www.cve.org/CVERecord?id=CVE-2025-11197)), reported to me by [WordFence](https://www.wordfence.com). This time it's with the icon folder parameter
+* Enhancement: Fixed another reported vulnerability ([CVE-2025-11197](https://www.cve.org/CVERecord?id=CVE-2025-11197)), reported to me by [WordFence](https://www.wordfence.com/r/26c227ba3ee33458/). This time it's with the icon folder parameter
 * Enhancement: Added some further sanitization to improved the security further
 * Bug: Fixed a bug with the word count output
 
 = 2.6.1 =
-* Enhancement: Fixed a reported vulnerability ([CVE-2025-10181](https://www.cve.org/CVERecord?id=CVE-2025-10181)), reported to me by [WordFence](https://www.wordfence.com). Until this fix, it was possible for an editor, using the plugin's shortcode, to inject web scripts via a link.
+* Enhancement: Fixed a reported vulnerability ([CVE-2025-10181](https://www.cve.org/CVERecord?id=CVE-2025-10181)), reported to me by [WordFence](https://www.wordfence.com/r/26c227ba3ee33458/). Until this fix, it was possible for an editor, using the plugin's shortcode, to inject web scripts via a link.
 
 = 2.6 =
 * Enhancements: Numerous code quality improvements. So many, this is a major release bump as so much of the code has changed. No new features, though
@@ -272,5 +280,5 @@ I use semantic versioning, with the first release being 1.0.
 
 == Upgrade Notice ==
 
-= 2.6.2 =
-* Fixed a number of security vulnerabilities as well as a logic bug
+= 2.6.3 =
+* Fixed a reported security vulnerability
