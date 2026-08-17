@@ -32,7 +32,7 @@ function draft_list_plugin_meta( $links, $file ) {
 			array( '<a href="https://github.com/dartiss/draft-list">' . __( 'Github', 'simple-draft-list' ) . '</a>' ),
 			array( '<a href="https://wordpress.org/support/plugin/simple-draft-list">' . __( 'Support', 'simple-draft-list' ) . '</a>' ),
 			array( '<a href="https://artiss.blog/donate">' . __( 'Donate', 'simple-draft-list' ) . '</a>' ),
-			array( '<a href="https://wordpress.org/support/plugin/simple-draft-list/reviews/?filter=5" title="' . __( 'Rate the plugin on WordPress.org', 'simple-draft-list' ) . '" style="color: #ffb900">' . str_repeat( '<span class="dashicons dashicons-star-filled" style="font-size: 16px; width:16px; height: 16px"></span>', 5 ) . '</a>' ),
+			array( '<a href="' . esc_url( 'https://wordpress.org/support/plugin/simple-draft-list/reviews/' ) . '">' . __( 'Write a Review', 'simple-draft-list' ) . '</a>' ),
 		);
 	}
 
