@@ -207,6 +207,12 @@ function draft_list_generate_code( $list_limit = '', $list_type = '', $list_orde
 		$error = true;
 	}
 
+	//  date format string.
+	if ( false !== strpbrk( $date_format, "\\<>\"'" ) ) {
+		$code .= draft_list_report_error( __( 'The date format contains invalid characters', 'simple-draft-list' ), $plugin_name, false );
+		$error = true;
+	}
+
 	// Calculate created and modified dates to compare with.
 	$far_past = '2 January 1970';
 
@@ -397,11 +403,11 @@ function draft_list_generate_code( $list_limit = '', $list_type = '', $list_orde
 					$this_line = str_replace( '{{draft}}', $draft, $this_line );
 
 					// Replace the created date.
-					$created_date = gmdate( $date_format, strtotime( $post_created ) );
+					$created_date = esc_html( gmdate( $date_format, strtotime( $post_created ) ) );
 					$this_line    = str_replace( '{{created}}', $created_date, $this_line );
 
 					// Replace the modified date.
-					$modified_date = gmdate( $date_format, strtotime( $post_modified ) );
+					$modified_date = esc_html( gmdate( $date_format, strtotime( $post_modified ) ) );
 					$this_line     = str_replace( '{{modified}}', $modified_date, $this_line );
 
 					// Replace the word and character counts.
